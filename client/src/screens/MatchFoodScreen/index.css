@@ -1,0 +1,13 @@
+.chip-selector {
+    cursor: pointer;
+}
+
+.chip-selector--active {
+    background: var(--red);
+    color: var(--white)
+}
+
+.chip-selector--active:hover {
+    background: var(--red) !important;
+    color: var(--white) !important;
+}
