@@ -6,6 +6,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
+import { Link as RouterLink } from 'react-router-dom'
 import Link from '@mui/material/Link'
 import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../../constants/theme'
@@ -113,7 +114,7 @@ function SignUpScreen() {
                             </IconButton>
                         </Box>
                     </Box>
-                    <Link href='#' variant='body2' sx={{
+                    <Link component={RouterLink} to='/login' variant='body2' sx={{
                         marginTop: 5,
                         alignSelf: 'start'
                     }}>
