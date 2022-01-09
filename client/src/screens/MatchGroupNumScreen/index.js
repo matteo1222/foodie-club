@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -6,10 +6,17 @@ import Button from '@mui/material/Button'
 import { Link as RouterLink } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../../constants/theme'
-import WeekdayTimeTable from '../../components/WeekdayTimeTable'
+import Slider from '@mui/material/Slider'
 import StepIndicator from '../../components/StepIndicator'
 
-function MatchTimeScreen() {
+function MatchGroupNumScreen() {
+    const [groupRange, setGroupRange] = useState([3, 6])
+    const groupRangeText = (value) => {
+        return `${value} people`
+    }
+    const handleChange = (event, newValue) => {
+        setGroupRange(newValue)
+    }
     return (
         <ThemeProvider theme={theme}>
             <Container sx={{
@@ -30,16 +37,24 @@ function MatchTimeScreen() {
                     fontStyle: 'italic',
                     color: 'secondary.main'
                 }}>
-                    When are you usually available?
+                    How many people do you want to go with?
                 </Typography>
-                <Box sx={{width: '80%', height: 200}}>
-                    <WeekdayTimeTable/>
+                <Box sx={{ width: '60%', height: 200, display: 'flex', alignItems: 'center' }}>
+                    <Slider
+                        getAriaLabel={() => 'Group number range'}
+                        value={groupRange}
+                        onChange={handleChange}
+                        valueLabelDisplay="on"
+                        getAriaValueText={groupRangeText}
+                        min={2}
+                        max={8}
+                    />
                 </Box>
                 <Box component='div' sx={{marginTop: 10}}>
                     <Button
                         variant='contained'
                         component={RouterLink}
-                        to='/set-up-match-info-group-num'
+                        to='/set-up-match-info-food'
                         sx={{
                             marginTop: 3,
                             marginBottom: 2,
@@ -51,7 +66,7 @@ function MatchTimeScreen() {
                     <Button
                         variant='contained'
                         component={RouterLink}
-                        to='/set-up-match-info-group-num'
+                        to='/set-up-match-info-food'
                         sx={{
                             marginTop: 3,
                             marginBottom: 2,
@@ -62,10 +77,10 @@ function MatchTimeScreen() {
                         }}
                     >Skip</Button>
                 </Box>
-                <StepIndicator steps={3} currentStep={1}/>
+                <StepIndicator steps={3} currentStep={2}/>
             </Container>
         </ThemeProvider>
     )
 }
 
-export default MatchTimeScreen
+export default MatchGroupNumScreen
