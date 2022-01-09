@@ -20,7 +20,9 @@ function LogInScreen() {
     return (
         <ThemeProvider theme={theme}>
             <Grid container sx={{height: '100vh'}}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6} sx={{
+                    display: {xs: 'none', sm: 'none', md: 'block'}
+                }}>
                     <Header/>
                 </Grid>
                 <Grid item xs={12} md={6} sx={{
@@ -35,7 +37,7 @@ function LogInScreen() {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        width: '60%'
+                        width: '75%'
                     }}>
                         <Typography component='h1' variant='h5'>
                             Log In
