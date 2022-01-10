@@ -23,7 +23,7 @@ function GroupBlock() {
         }}>
             <Grid container>
                 <Grid item xs={5}>
-                    <img alt='restaurant image' className='image' src='https://images.squaremeal.co.uk/cloud/restaurants/10712/images/the-ninth-1_09092019021238.jpg?w=928&h=522&fit=crop'/>
+                    <img alt='restaurant' className='image' src='https://images.squaremeal.co.uk/cloud/restaurants/10712/images/the-ninth-1_09092019021238.jpg?w=928&h=522&fit=crop'/>
                 </Grid>
                 <Grid item xs={7}>
                     <Grid container alignItems='center' rowSpacing={1} sx={{padding: 2}}>

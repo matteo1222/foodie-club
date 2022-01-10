@@ -12,9 +12,7 @@ import FilterMenu from '../../components/FilterMenu'
 
 function JoinGroupScreen() {
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
-    const handleSubmit = () => {
-        console.log('Submit')
-    }
+
     return (
         <Box component='main'>
             <Stack direction='row' justifyContent='space-between' alignItems='center'>

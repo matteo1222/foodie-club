@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import Header from '../../components/Header'
-import TextField from '@mui/material/TextField'
-import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
-import FilterListIcon from '@mui/icons-material/FilterList'
-import { Link as RouterLink } from 'react-router-dom'
-import Link from '@mui/material/Link'
-import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../../constants/theme'
-import { COLORS } from '../../constants/colors'
-import GroupBlock from '../../components/GroupBlock'
 import SearchBar from '../../components/SearchBar'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import FilterMenu from '../../components/FilterMenu'
@@ -25,9 +15,6 @@ import RestaurantBlock from '../../components/RestaurantBlock'
 function StartGroupScreen() {
     const [selectedRestaurant, setSelectedRestaurant] = useState([])
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
-    const handleSubmit = () => {
-        console.log('Submit')
-    }
 
     useEffect(() => {
         setSelectedRestaurant(restaurantData)
