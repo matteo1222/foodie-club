@@ -95,7 +95,7 @@ function MatchFoodScreen() {
                         }}
                     >Skip</Button>
                 </Box>
-                <StepIndicator steps={3} currentStep={2}/>
+                <StepIndicator steps={3} currentStep={3}/>
             </Container>
         </ThemeProvider>
     )

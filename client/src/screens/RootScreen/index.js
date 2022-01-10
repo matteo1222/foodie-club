@@ -23,6 +23,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../../constants/theme'
 import { COLORS } from '../../constants/colors'
 import JoinGroupScreen from '../JoinGroupScreen';
+import { Link as RouterLink } from 'react-router-dom';
 import './index.css'
 
 const drawerWidth = 240;
@@ -40,13 +41,13 @@ function RootScreen(props) {
     <div>
       <Toolbar />
       <List>
-        <ListItem button key='Join a Group'>
+        <ListItem button component={RouterLink} to='/join-a-group' key='Join a Group'>
           <ListItemIcon>
             <GroupAddIcon sx={{color: COLORS.white}} />
           </ListItemIcon>
           <ListItemText primary='Join a Group' />
         </ListItem>
-        <ListItem button key='Start a Group'>
+        <ListItem button component={RouterLink} to='/start-a-group' key='Start a Group'>
           <ListItemIcon>
             <RestaurantIcon sx={{color: COLORS.white}} />
           </ListItemIcon>

@@ -10,6 +10,7 @@ import MatchTimeScreen from './screens/MatchTimeScreen';
 import MatchGroupNumScreen from './screens/MatchGroupNumScreen';
 import MatchFoodScreen from './screens/MatchFoodScreen';
 import JoinGroupScreen from './screens/JoinGroupScreen';
+import StartGroupScreen from './screens/StartGroupScreen';
 import RootScreen from './screens/RootScreen';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Outlet } from 'react-router';
@@ -27,6 +28,7 @@ function App() {
         <Route path='app' element={<RootScreen/>}/>
         <Route element={<RootScreen><Outlet/></RootScreen>}>
           <Route path='/join-a-group' element={<JoinGroupScreen />} />
+          <Route path='/start-a-group' element={<StartGroupScreen />} />
         </Route>
         <Route
           path='*'
