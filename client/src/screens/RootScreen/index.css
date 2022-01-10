@@ -1,0 +1,3 @@
+.drawer-background {
+    background: linear-gradient(135deg, var(--red) 0%, var(--yellow) 100%) !important;
+}

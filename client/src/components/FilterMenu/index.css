@@ -1,0 +1,21 @@
+.chip-selector {
+    cursor: pointer;
+    background: var(--white) !important;
+    color: var(--black) !important;
+}
+
+.chip-selector:hover {
+    cursor: pointer;
+    /* background: var(--light-grey) !important; */
+    box-shadow: 0px 4px 10px var(--grey);
+}
+
+.chip-selector--active {
+    background: var(--red) !important;
+    color: var(--white) !important;
+}
+
+.chip-selector--active:hover {
+    background: var(--red) !important;
+    color: var(--white) !important;
+}
