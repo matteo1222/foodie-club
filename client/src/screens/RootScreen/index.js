@@ -25,7 +25,6 @@ import './index.css'
 const drawerWidth = 240;
 
 function RootScreen(props) {
-  console.log('props', props)
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -49,7 +48,7 @@ function RootScreen(props) {
           </ListItemIcon>
           <ListItemText primary='Start a Group' />
         </ListItem>
-        <ListItem button key='My Groups'>
+        <ListItem button component={RouterLink} to='/my-groups' key='My Groups'>
           <ListItemIcon>
             <GroupsIcon sx={{color: COLORS.white}} />
           </ListItemIcon>
