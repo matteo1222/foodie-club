@@ -12,6 +12,7 @@ import JoinGroupScreen from './screens/JoinGroupScreen';
 import StartGroupScreen from './screens/StartGroupScreen';
 import MyGroupsScreen from './screens/MyGroupsScreen';
 import ChatScreen from './screens/ChatScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import RootScreen from './screens/RootScreen';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Outlet } from 'react-router';
@@ -33,6 +34,7 @@ function App() {
           <Route path='/my-groups' element={<MyGroupsScreen><Outlet/></MyGroupsScreen>}>
             <Route path=':groupId' element={<ChatScreen />} />
           </Route>
+          <Route path='/profile' element={<ProfileScreen />} />
         </Route>
         <Route
           path='*'
