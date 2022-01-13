@@ -54,7 +54,7 @@ function RootScreen(props) {
           </ListItemIcon>
           <ListItemText primary='My Groups' />
         </ListItem>
-        <ListItem button key='Preferences'>
+        <ListItem button component={RouterLink} to='/preferences' key='Preferences'>
           <ListItemIcon>
             <FavoriteIcon sx={{color: COLORS.white}} />
           </ListItemIcon>

@@ -47,7 +47,7 @@ function MatchFoodScreen() {
                     What kinds of cuisine do you enjoy?
                 </Typography>
                 <Box sx={{
-                    width: '50%',
+                    width: {sm: '90%', md: '50%'},
                     height: 200,
                     display: 'flex',
                     justifyContent: 'center',

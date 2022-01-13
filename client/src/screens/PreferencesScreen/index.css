@@ -1,0 +1,9 @@
+.photo-button {
+    transition: 0.4s;
+}
+
+.photo-button:hover {
+    cursor: pointer;
+    background: var(--light-grey);
+    transition: 0.4s;
+}

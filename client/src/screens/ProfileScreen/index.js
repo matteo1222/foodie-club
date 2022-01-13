@@ -27,7 +27,7 @@ function ProfileScreen() {
 
     return (
         <Grid container justifyContent='center'>
-            <Grid item sm={12}>
+            <Grid item sm={12} sx={{marginBottom: 2}}>
                 <Typography variant='h4' sx={{fontWeight: 'bold'}}>Profile</Typography>
             </Grid>
             <Grid item sm={10} md={6} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -70,7 +70,7 @@ function ProfileScreen() {
                     margin='normal'
                     id='about-me'
                     multiline
-                    minRows={6}
+                    minRows={8}
                     placeholder='Briefly introduce yourself to let people know more about you. This make it easier for you to find a foodie friend!'
                 />
             </Grid>
