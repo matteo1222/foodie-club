@@ -17,32 +17,62 @@ import PreferencesScreen from './screens/PreferencesScreen';
 import RootScreen from './screens/RootScreen';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Outlet } from 'react-router';
+import { AuthProvider, RequireAuth } from './components/auth';
 
 function App() {
   return (
     <div className='App'>
-      <Routes>
-        <Route exact path='/' element={<Navigate to='/login'/>}/>
-        <Route path='login' element={<LogInScreen/>}/>
-        <Route path='signup' element={<SignUpScreen/>}/>
-        <Route path='set-up-match-info-time' element={<MatchTimeScreen/>}/>
-        <Route path='set-up-match-info-group-num' element={<MatchGroupNumScreen/>}/>
-        <Route path='set-up-match-info-food' element={<MatchFoodScreen/>}/>
-        <Route path='app' element={<RootScreen/>}/>
-        <Route element={<RootScreen><Outlet/></RootScreen>}>
-          <Route path='/join-a-group' element={<JoinGroupScreen />} />
-          <Route path='/start-a-group' element={<StartGroupScreen />} />
-          <Route path='/my-groups' element={<MyGroupsScreen><Outlet/></MyGroupsScreen>}>
-            <Route path=':groupId' element={<ChatScreen />} />
+      <AuthProvider>
+        <Routes>
+          <Route exact path='/' element={<Navigate to='/login'/>}/>
+          <Route path='login' element={<LogInScreen/>}/>
+          <Route path='signup' element={<SignUpScreen/>}/>
+          <Route
+            path='set-up-match-info-time'
+            element={
+              <RequireAuth>
+                <MatchTimeScreen/>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path='set-up-match-info-group-num'
+            element={
+              <RequireAuth>
+                <MatchGroupNumScreen/>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path='set-up-match-info-food'
+            element={
+              <RequireAuth>
+                <MatchFoodScreen/>
+              </RequireAuth>
+            }
+          />
+          <Route
+            element={
+              <RequireAuth>
+                <RootScreen>
+                  <Outlet/>
+                </RootScreen>
+              </RequireAuth>
+            }>
+            <Route path='/join-a-group' element={<JoinGroupScreen />} />
+            <Route path='/start-a-group' element={<StartGroupScreen />} />
+            <Route path='/my-groups' element={<MyGroupsScreen><Outlet/></MyGroupsScreen>}>
+              <Route path=':groupId' element={<ChatScreen />} />
+            </Route>
+            <Route path='/profile' element={<ProfileScreen />} />
+            <Route path='/preferences' element={<PreferencesScreen />} />
           </Route>
-          <Route path='/profile' element={<ProfileScreen />} />
-          <Route path='/preferences' element={<PreferencesScreen />} />
-        </Route>
-        <Route
-          path='*'
-          element={<Navigate to='/login' />}
-        />
-      </Routes>
+          <Route
+            path='*'
+            element={<Navigate to='/login' />}
+          />
+        </Routes>
+      </AuthProvider>
     </div>
   );
 }

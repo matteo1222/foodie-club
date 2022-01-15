@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../components/Header'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
@@ -6,17 +6,37 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom'
 import Link from '@mui/material/Link'
 import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../../constants/theme'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import GoogleIcon from '@mui/icons-material/Google'
 import { COLORS } from '../../constants/colors'
+import { useAuth } from '../../components/auth'
 
 function LogInScreen() {
-    const handleSubmit = () => {
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || '/'
+    const auth = useAuth()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value)
+    }
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value)
+    }
+    const handleSubmit = (event) => {
+        event.preventDefault()
         console.log('Submit')
+        auth.login(
+            email,
+            password,
+            () => navigate(from, { replace: true }),
+            (err) => console.log(err)
+        )
     }
     return (
         <ThemeProvider theme={theme}>
@@ -47,6 +67,8 @@ function LogInScreen() {
                             marginTop: 1
                         }}>
                             <TextField
+                                value={email}
+                                onChange={handleEmailChange}
                                 variant='standard'
                                 margin='normal'
                                 required
@@ -58,6 +80,8 @@ function LogInScreen() {
                                 autoFocus
                             />
                             <TextField
+                                value={password}
+                                onChange={handlePasswordChange}
                                 variant='standard'
                                 margin='normal'
                                 required
@@ -68,17 +92,17 @@ function LogInScreen() {
                                 id='password'
                                 autoComplete='current-password'
                             />
+                            <Button
+                                type='submit'
+                                variant='contained'
+                                sx={{
+                                    marginTop: 3,
+                                    marginBottom: 2,
+                                    borderRadius: 20,
+                                    paddingX: 5
+                                }}
+                            >Log In</Button>
                         </Box>
-                        <Button
-                            type='submit'
-                            variant='contained'
-                            sx={{
-                                marginTop: 3,
-                                marginBottom: 2,
-                                borderRadius: 20,
-                                paddingX: 5
-                            }}
-                        >Log In</Button>
                         <Typography component='span' sx={{
                             color: COLORS.black
                         }}>

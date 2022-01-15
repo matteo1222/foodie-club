@@ -19,18 +19,28 @@ import Toolbar from '@mui/material/Toolbar';
 import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../../constants/theme'
 import { COLORS } from '../../constants/colors'
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../components/auth';
 import './index.css'
 
 const drawerWidth = 240;
 
 function RootScreen(props) {
+  const auth = useAuth()
+  const navigate = useNavigate()
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const handleClickLogout = () => {
+    auth.logout(
+      () => navigate('/login'),
+      (err) => console.log(err)
+    )
+  }
 
   const drawer = (
     <div>
@@ -66,7 +76,7 @@ function RootScreen(props) {
           </ListItemIcon>
           <ListItemText primary='Profile' />
         </ListItem>
-        <ListItem button key='Log out' sx={{'&.MuiListItem-root': {marginTop: 35}}}>
+        <ListItem button onClick={handleClickLogout} key='Log out' sx={{'&.MuiListItem-root': {marginTop: 35}}}>
           <ListItemIcon>
             <LogoutIcon sx={{color: COLORS.white}} />
           </ListItemIcon>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../components/Header'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
@@ -13,11 +13,39 @@ import { theme } from '../../constants/theme'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import GoogleIcon from '@mui/icons-material/Google'
 import { COLORS } from '../../constants/colors'
+import { useAuth } from '../../components/auth'
 
 function SignUpScreen() {
-    const handleSubmit = () => {
-        console.log('Submit')
+    const auth = useAuth()
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const handleNameChange = (event) => {
+        setName(event.target.value)
     }
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value)
+    }
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value)
+    }
+    const handleConfirmPasswordChange = (event) => {
+        setConfirmPassword(event.target.value)
+    }
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        console.log('Submit')
+        const logInFunc = () => auth.login(email, password, () => console.log('done'), (err) => console.log(err))
+        auth.signUp(
+            name,
+            email,
+            password,
+            logInFunc,
+            (err) => console.log(err)
+        )
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <Grid container sx={{height: '100vh'}}>
@@ -47,6 +75,8 @@ function SignUpScreen() {
                             marginTop: 1
                         }}>
                             <TextField
+                                value={name}
+                                onChange={handleNameChange}
                                 variant='standard'
                                 margin='normal'
                                 required
@@ -58,6 +88,8 @@ function SignUpScreen() {
                                 autoFocus
                             />
                             <TextField
+                                value={email}
+                                onChange={handleEmailChange}
                                 variant='standard'
                                 margin='normal'
                                 required
@@ -68,6 +100,8 @@ function SignUpScreen() {
                                 autoComplete='email'
                             />
                             <TextField
+                                value={password}
+                                onChange={handlePasswordChange}
                                 variant='standard'
                                 margin='normal'
                                 required
@@ -79,6 +113,8 @@ function SignUpScreen() {
                                 autoComplete='current-password'
                             />
                             <TextField
+                                value={confirmPassword}
+                                onChange={handleConfirmPasswordChange}
                                 variant='standard'
                                 margin='normal'
                                 required
@@ -89,17 +125,17 @@ function SignUpScreen() {
                                 id='password'
                                 autoComplete='current-password'
                             />
+                            <Button
+                                type='submit'
+                                variant='contained'
+                                sx={{
+                                    marginTop: 3,
+                                    marginBottom: 2,
+                                    borderRadius: 20,
+                                    paddingX: 5
+                                }}
+                            >Sign Up</Button>
                         </Box>
-                        <Button
-                            type='submit'
-                            variant='contained'
-                            sx={{
-                                marginTop: 3,
-                                marginBottom: 2,
-                                borderRadius: 20,
-                                paddingX: 5
-                            }}
-                        >Sign Up</Button>
                         <Typography component='span' sx={{
                             color: COLORS.black
                         }}>

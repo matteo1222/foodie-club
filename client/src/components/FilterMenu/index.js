@@ -174,6 +174,7 @@ const FilterMenu = () => {
                         {foodTypes.map(el => {
                             return (
                                 <Chip
+                                    key={el.id}
                                     label={el.label}
                                     variant='filled'
                                     onClick={() => {handleFoodClick(el.id)}}
