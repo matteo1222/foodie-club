@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import Link from '@mui/material/Link'
 import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../../constants/theme'
@@ -17,6 +17,7 @@ import { useAuth } from '../../components/auth'
 
 function SignUpScreen() {
     const auth = useAuth()
+    const navigate = useNavigate()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -36,7 +37,12 @@ function SignUpScreen() {
     const handleSubmit = (event) => {
         event.preventDefault()
         console.log('Submit')
-        const logInFunc = () => auth.login(email, password, () => console.log('done'), (err) => console.log(err))
+        const logInFunc = () => auth.login(
+            email,
+            password,
+            () => navigate('/set-up-match-info-time'),
+            (err) => console.log(err)
+        )
         auth.signUp(
             name,
             email,
