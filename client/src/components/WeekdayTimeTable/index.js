@@ -1,13 +1,12 @@
 import React from 'react'
+import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import { ThemeProvider } from '@mui/material/styles'
-import { theme } from '../../constants/theme'
 import Checkbox from '../Checkbox'
 
 function WeekdayTimeTable() {
     return (
-        <ThemeProvider theme={theme}>
+        <Container>
             {/* First Row */}
             <Grid container justifyContent='center' sx={{marginY: 2}}>
                 <Grid item xs={2}>
@@ -88,7 +87,7 @@ function WeekdayTimeTable() {
                     <Checkbox/>
                 </Grid>
             </Grid>
-        </ThemeProvider>
+        </Container>
     )
 }
 
