@@ -12,8 +12,8 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.increments('id');
-        table.string('name');
+        table.increments('id').primary();
+        table.string('name').notNullable();
         table.string('price');
         table.enu('type', foodTypes);
         table.float('rating');

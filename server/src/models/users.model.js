@@ -11,12 +11,11 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.increments('id');
-        table.string('name');
-        table.string('email').unique();
-        table.string('password');
-      
-      
+        table.increments('id').primary();
+        table.string('name').notNullable();
+        table.string('email').unique().notNullable();
+        table.string('password').notNullable();
+
         table.string('googleId');
       
         table.string('facebookId');
