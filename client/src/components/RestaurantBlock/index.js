@@ -7,8 +7,10 @@ import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
 import { COLORS } from '../../constants/colors'
 import './index.css'
+import { foodTypesToLabel } from '../../constants/foodTypesToLabel'
 
-function RestaurantBlock() {
+function RestaurantBlock ({ restaurant }) {
+    console.log('restua', restaurant)
     const handleStartGroup = () => {
         console.log('join')
     }
@@ -23,23 +25,23 @@ function RestaurantBlock() {
         }}>
             <Grid container>
                 <Grid item xs={5}>
-                    <img alt='restaurant' className='image' src='https://images.squaremeal.co.uk/cloud/restaurants/10712/images/the-ninth-1_09092019021238.jpg?w=928&h=522&fit=crop'/>
+                    <img alt='restaurant' className='image' src={restaurant.image_source}/>
                 </Grid>
                 <Grid item xs={7}>
                     <Grid container alignItems='center' rowSpacing={1} sx={{padding: 2}}>
                         <Grid item xs={10}>
                             <Typography variant='subtitle1' sx={{fontWeight: 'bold'}}>
-                                The Ninth
+                                {restaurant.name}
                             </Typography>
                         </Grid>
                         <Grid item xs={2}>
                             <Typography variant='body2'>
-                                ££
+                                {restaurant.price}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Chip
-                                label='Fast Food'
+                                label={foodTypesToLabel[restaurant.type]}
                                 variant='outlined'
                                 size='small'
                                 sx={{color: COLORS.grey}}
@@ -51,7 +53,7 @@ function RestaurantBlock() {
                                     Rated
                                 </Typography>
                                 <Typography variant='body2' sx={{fontWeight: 'bold', color: COLORS.red}}>
-                                    3.9 / 5.0
+                                    {`${restaurant.rating} / 5.0`}
                                 </Typography>
                                 <Typography variant='body2'>
                                     on Google

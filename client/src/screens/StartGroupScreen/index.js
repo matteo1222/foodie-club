@@ -11,13 +11,27 @@ import FilterMenu from '../../components/FilterMenu'
 import SelectedRestaurantBlock from '../../components/SelectedRestaurantBlock'
 import { selectedRestaurants as restaurantData } from '../../mockData/selectedRestaurants'
 import RestaurantBlock from '../../components/RestaurantBlock'
+import client from '../../feathers/feathers-client'
 
 function StartGroupScreen() {
+    const [restaurants, setRestaurants] = useState([])
     const [selectedRestaurant, setSelectedRestaurant] = useState([])
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
     useEffect(() => {
         setSelectedRestaurant(restaurantData)
+    }, [])
+
+    const queryRestaurants = () => {
+        return client
+            .service('restaurants')
+            .find()
+            .then(res => setRestaurants(res.data))
+    }
+
+    useEffect(() => {
+        // query restuarants
+        queryRestaurants()
     }, [])
     return (
         <Box component='main'>
@@ -55,9 +69,9 @@ function StartGroupScreen() {
                     French
                 </Typography>
                 <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                    {new Array(5).fill(null).map((el, idx) => {
+                    {restaurants.map((el) => {
                         return (
-                            <RestaurantBlock key={idx}/>
+                            <RestaurantBlock restaurant={el} key={el.id}/>
                         )
                     })}
                 </Box>
@@ -67,7 +81,7 @@ function StartGroupScreen() {
                 <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
                     {new Array(3).fill(null).map((el, idx) => {
                         return (
-                            <RestaurantBlock key={idx}/>
+                            <RestaurantBlock restaurant={{name: 'HI', type: 'pizza', price: 'OO', image_source: '', rating: 4.5}} key={idx}/>
                         )
                     })}
                 </Box>
