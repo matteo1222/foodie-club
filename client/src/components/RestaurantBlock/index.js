@@ -49,7 +49,7 @@ function RestaurantBlock ({ restaurant, disabled }) {
                             </Typography>
                         </Grid>
                         <Grid item xs={2}>
-                            <Typography variant='body2'>
+                            <Typography variant='body2' sx={{whiteSpace: 'nowrap'}}>
                                 {restaurant.price}
                             </Typography>
                         </Grid>

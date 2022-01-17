@@ -12,7 +12,10 @@ import SelectedRestaurantBlock from '../../components/SelectedRestaurantBlock'
 import { selectedRestaurants as restaurantData } from '../../mockData/selectedRestaurants'
 import RestaurantBlock from '../../components/RestaurantBlock'
 import client from '../../feathers/feathers-client'
+import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu'
 import { useAuth } from '../../components/auth'
+import LeftArrow from '../../components/LeftArrow'
+import RightArrow from '../../components/RightArrow'
 
 function StartGroupScreen() {
     const auth = useAuth()
@@ -76,13 +79,21 @@ function StartGroupScreen() {
         client
             .service('desired-restaurant')
             .on('removed', onRemoved)
+        return (() => {
+            client
+                .service('desired-restaurant')
+                .removeListener('created')
+            client
+                .service('desired-restaurant')
+                .removeListener('removed')
+        })
     }, [])
     return (
         <Box component='main'>
             <Typography variant='h4' sx={{fontWeight: 'bold'}}>
                 {desired.length === 0 ? 'Select a Restaurant to Start a Group' : 'Great! Waiting for others to join...'}
             </Typography>
-            <Box sx={{padding: 2, height: 160}}>
+            <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
                 {desired.map((el) => {
                     return (
                         <SelectedRestaurantBlock
@@ -90,11 +101,12 @@ function StartGroupScreen() {
                             imgSrc={el.image_source}
                             close={() => removeDesiredRestaurant(el)}
                             key={el.id}
+                            itemId={el.id}
                         />
                     )
                 })}
 
-            </Box>
+            </ScrollMenu>
             <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{marginTop: 2}}>
                 <Typography variant='h4' sx={{fontWeight: 'bold'}}>Start a Group</Typography>
                 <Stack direction='row' alignItems='center' sx={{marginRight: 6}}>
