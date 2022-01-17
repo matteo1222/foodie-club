@@ -13,7 +13,6 @@ import client from '../../feathers/feathers-client'
 
 function RestaurantBlock ({ restaurant, disabled }) {
     const auth = useAuth()
-    console.log('restua', restaurant)
     const handleStartGroup = () => {
         console.log('join')
         client

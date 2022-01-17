@@ -12,15 +12,16 @@ import SelectedRestaurantBlock from '../../components/SelectedRestaurantBlock'
 import { selectedRestaurants as restaurantData } from '../../mockData/selectedRestaurants'
 import RestaurantBlock from '../../components/RestaurantBlock'
 import client from '../../feathers/feathers-client'
-import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu'
+import { ScrollMenu } from 'react-horizontal-scrolling-menu'
 import { useAuth } from '../../components/auth'
 import LeftArrow from '../../components/LeftArrow'
 import RightArrow from '../../components/RightArrow'
+import RestaurantBlockContainer from '../../components/RestaurantBlockContainer'
+import { foodTypes } from '../../constants/foodTypes'
 
 function StartGroupScreen() {
     const auth = useAuth()
     const [desired, setDesired] = useState([])
-    const [restaurants, setRestaurants] = useState([])
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
     const queryDesired = () => {
@@ -33,12 +34,6 @@ function StartGroupScreen() {
                 }
             })
             .then(res => setDesired(res))
-    }
-    const queryRestaurants = () => {
-        return client
-            .service('restaurants')
-            .find()
-            .then(res => setRestaurants(res.data))
     }
 
     const onCreated = (created) => {
@@ -70,8 +65,6 @@ function StartGroupScreen() {
     useEffect(() => {
         // query desired restaurants
         queryDesired()
-        // query restuarants
-        queryRestaurants()
         // set up listener for create/remove event
         client
             .service('desired-restaurant')
@@ -121,16 +114,11 @@ function StartGroupScreen() {
                 </Stack>
             </Stack>
             <Box sx={{padding: 2}}>
-                <Typography variant='h5' color='secondary' sx={{fontWeight: 'bold'}}>
-                    French
-                </Typography>
-                <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                    {restaurants.map((restaurant) => {
-                        return (
-                            <RestaurantBlock restaurant={restaurant} key={restaurant.id} disabled={desired.some(el => el.restaurant_id === restaurant.id)}/>
-                        )
-                    })}
-                </Box>
+                {foodTypes.map(el => {
+                    return (
+                        <RestaurantBlockContainer foodType={el.value} desired={desired}/>
+                    )
+                })}
                 <Typography variant='h5' color='secondary' sx={{fontWeight: 'bold', marginTop: 2}}>
                     Restaurants you might like
                 </Typography>
