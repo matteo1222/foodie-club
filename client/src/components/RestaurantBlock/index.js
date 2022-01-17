@@ -8,11 +8,25 @@ import Button from '@mui/material/Button'
 import { COLORS } from '../../constants/colors'
 import './index.css'
 import { foodTypesToLabel } from '../../constants/foodTypesToLabel'
+import { useAuth } from '../auth'
+import client from '../../feathers/feathers-client'
 
-function RestaurantBlock ({ restaurant }) {
+function RestaurantBlock ({ restaurant, disabled }) {
+    const auth = useAuth()
     console.log('restua', restaurant)
     const handleStartGroup = () => {
         console.log('join')
+        client
+            .service('desired-restaurant')
+            .create({
+                user_id: auth.user.id,
+                restaurant_id: restaurant.id
+            }, {
+                query: {
+                    getRestaurants: true
+                }
+            })
+            .catch(err => console.error('Error creating desired restaurants', err))
     }
     return (
         <Box sx={{
@@ -66,6 +80,7 @@ function RestaurantBlock ({ restaurant }) {
                                 color='secondary'
                                 aria-label='start-a-group'
                                 size='small'
+                                disabled={disabled}
                                 onClick={handleStartGroup}
                                 sx={{
                                     borderRadius: 20,

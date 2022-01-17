@@ -12,16 +12,25 @@ import SelectedRestaurantBlock from '../../components/SelectedRestaurantBlock'
 import { selectedRestaurants as restaurantData } from '../../mockData/selectedRestaurants'
 import RestaurantBlock from '../../components/RestaurantBlock'
 import client from '../../feathers/feathers-client'
+import { useAuth } from '../../components/auth'
 
 function StartGroupScreen() {
+    const auth = useAuth()
+    const [desired, setDesired] = useState([])
     const [restaurants, setRestaurants] = useState([])
-    const [selectedRestaurant, setSelectedRestaurant] = useState([])
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
-    useEffect(() => {
-        setSelectedRestaurant(restaurantData)
-    }, [])
-
+    const queryDesired = () => {
+        return client
+            .service('desired-restaurant')
+            .find({
+                query: {
+                    user_id: 1,
+                    getRestaurants: true
+                }
+            })
+            .then(res => setDesired(res))
+    }
     const queryRestaurants = () => {
         return client
             .service('restaurants')
@@ -29,23 +38,58 @@ function StartGroupScreen() {
             .then(res => setRestaurants(res.data))
     }
 
+    const onCreated = (created) => {
+        console.log('created', created)
+        if (created.user_id !== auth.user.id) return
+
+        setDesired(prevState => [...prevState, {
+            id: created.id,
+            user_id: created.user_id,
+            restaurant_id: created.restaurant_id,
+            name: created.data.name,
+            image_source: created.data.image_source
+        }])
+    }
+
+    const onRemoved = (removed) => {
+        console.log('removed', removed)
+        if (removed.user_id !== auth.user.id) return
+
+        setDesired(prevState => prevState.filter(el => el.id !== removed.id))
+    }
+
+    const removeDesiredRestaurant = (desired) => {
+        client
+            .service('desired-restaurant')
+            .remove(desired.id)
+    }
+
     useEffect(() => {
+        // query desired restaurants
+        queryDesired()
         // query restuarants
         queryRestaurants()
+        // set up listener for create/remove event
+        client
+            .service('desired-restaurant')
+            .on('created', onCreated)
+        client
+            .service('desired-restaurant')
+            .on('removed', onRemoved)
     }, [])
     return (
         <Box component='main'>
             <Typography variant='h4' sx={{fontWeight: 'bold'}}>
-                {selectedRestaurant.length === 0 ? 'Select a Restaurant to Start a Group' : 'Great! Waiting for others to join...'}
+                {desired.length === 0 ? 'Select a Restaurant to Start a Group' : 'Great! Waiting for others to join...'}
             </Typography>
             <Box sx={{padding: 2, height: 160}}>
-                {selectedRestaurant.map((el, idx) => {
+                {desired.map((el) => {
                     return (
                         <SelectedRestaurantBlock
                             restaurantName={el.name}
-                            imgSrc={el.imgSrc}
-                            close={() => console.log('close')}
-                            key={idx}
+                            imgSrc={el.image_source}
+                            close={() => removeDesiredRestaurant(el)}
+                            key={el.id}
                         />
                     )
                 })}
@@ -69,9 +113,9 @@ function StartGroupScreen() {
                     French
                 </Typography>
                 <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                    {restaurants.map((el) => {
+                    {restaurants.map((restaurant) => {
                         return (
-                            <RestaurantBlock restaurant={el} key={el.id}/>
+                            <RestaurantBlock restaurant={restaurant} key={restaurant.id} disabled={desired.some(el => el.restaurant_id === restaurant.id)}/>
                         )
                     })}
                 </Box>
