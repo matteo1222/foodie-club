@@ -8,7 +8,7 @@ import { theme } from '../../constants/theme'
 import GroupBlock from '../../components/GroupBlock'
 import SearchBar from '../../components/SearchBar'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import FilterMenu from '../../components/FilterMenu'
+import FilterMenuGroup from '../../components/FilterMenuGroup'
 
 function JoinGroupScreen() {
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
@@ -25,7 +25,7 @@ function JoinGroupScreen() {
                     {/* <IconButton aria-label='join-group-filter-button'>
                         <FilterListIcon/>
                     </IconButton> */}
-                    <FilterMenu/>
+                    <FilterMenuGroup/>
                 </Stack>
             </Stack>
             <Box sx={{padding: 2}}>

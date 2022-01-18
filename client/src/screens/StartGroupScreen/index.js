@@ -7,7 +7,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import { theme } from '../../constants/theme'
 import SearchBar from '../../components/SearchBar'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import FilterMenu from '../../components/FilterMenu'
+import FilterMenuRestaurant from '../../components/FilterMenuRestaurant'
 import SelectedRestaurantBlock from '../../components/SelectedRestaurantBlock'
 import { selectedRestaurants as restaurantData } from '../../mockData/selectedRestaurants'
 import RestaurantBlock from '../../components/RestaurantBlock'
@@ -21,6 +21,9 @@ import { foodTypes } from '../../constants/foodTypes'
 
 function StartGroupScreen() {
     const auth = useAuth()
+    const [searchText, setSearchText] = useState('')
+    const [pricePref, setPricePref] = useState([])
+    const [foodPref, setFoodPref] = useState([])
     const [desired, setDesired] = useState([])
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -56,10 +59,42 @@ function StartGroupScreen() {
         setDesired(prevState => prevState.filter(el => el.id !== removed.id))
     }
 
+    const handleSearchChange = (event) => {
+        setSearchText(event.target.value)
+    }
+
     const removeDesiredRestaurant = (desired) => {
         client
             .service('desired-restaurant')
             .remove(desired.id)
+    }
+
+    const getFoodTypeContainer = () => {
+        if (foodPref.length === 0) {
+            return foodTypes.map(el => {
+                return (
+                    <RestaurantBlockContainer
+                        key={el.id}
+                        foodType={el.value}
+                        desired={desired}
+                        searchText={searchText}
+                        pricePref={pricePref}
+                    />
+                )
+            })
+        }
+        
+        return foodPref.map(el => {
+            return (
+                <RestaurantBlockContainer
+                    key={el.id}
+                    foodType={el}
+                    desired={desired}
+                    searchText={searchText}
+                    pricePref={pricePref}
+                />
+            )
+        })
     }
 
     useEffect(() => {
@@ -103,29 +138,33 @@ function StartGroupScreen() {
             <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{marginTop: 2}}>
                 <Typography variant='h4' sx={{fontWeight: 'bold'}}>Start a Group</Typography>
                 <Stack direction='row' alignItems='center' sx={{marginRight: 6}}>
-                    {matches && <SearchBar id='join-group-search-bar'/>}
+                    {matches && <SearchBar id='join-group-search-bar' value={searchText} onChange={handleSearchChange}/>}
                     <IconButton aria-label='join-group-search-button' sx={{display: {sm: 'block', md: 'none'}}}>
                         <SearchIcon/>
                     </IconButton>
                     {/* <IconButton aria-label='join-group-filter-button'>
                         <FilterListIcon/>
                     </IconButton> */}
-                    <FilterMenu/>
+                    <FilterMenuRestaurant
+                        pricePref={pricePref}
+                        setPricePref={setPricePref}
+                        foodPref={foodPref}
+                        setFoodPref={setFoodPref}
+                    />
                 </Stack>
             </Stack>
             <Box sx={{padding: 2}}>
-                {foodTypes.map(el => {
-                    return (
-                        <RestaurantBlockContainer foodType={el.value} desired={desired}/>
-                    )
-                })}
+                {getFoodTypeContainer()}
                 <Typography variant='h5' color='secondary' sx={{fontWeight: 'bold', marginTop: 2}}>
                     Restaurants you might like
                 </Typography>
                 <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
                     {new Array(3).fill(null).map((el, idx) => {
                         return (
-                            <RestaurantBlock restaurant={{name: 'HI', type: 'pizza', price: 'OO', image_source: '', rating: 4.5}} key={idx}/>
+                            <RestaurantBlock
+                                restaurant={{name: 'HI', type: 'pizza', price: 'OO', image_source: '', rating: 4.5}}
+                                key={idx}
+                            />
                         )
                     })}
                 </Box>

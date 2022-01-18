@@ -7,39 +7,58 @@ import RestaurantBlock from '../RestaurantBlock'
 import LoadMoreButton from '../LoadMoreButton'
 import client from '../../feathers/feathers-client'
 
-function RestaurantBlockContainer({ foodType, desired }) {
+function RestaurantBlockContainer({ foodType, desired, searchText, pricePref }) {
     const QUERY_LIMIT = 6
+    const [loading, setLoading] = useState(true)
+    const [hasData, setHasData] = useState(true)
     const [restaurants, setRestaurants] = useState([])
     const [total, setTotal] = useState(0)
     const [currentSkip, setCurrentSkip] = useState(0)
     const thisRef = useRef(null)
 
-    const queryRestaurants = (foodType) => {
+    const queryRestaurants = (explicitSkip) => {
         console.log('query')
+        let queryOption = {
+            $skip: explicitSkip === undefined ? currentSkip : explicitSkip,
+            $limit: QUERY_LIMIT,
+            type: foodType
+        }
+
+        if (searchText.length > 0) {
+            queryOption.name = {
+                $ilike: `%${searchText}%`
+            }
+        }
         return client
             .service('restaurants')
             .find({
-                query: {
-                    $skip: currentSkip,
-                    $limit: QUERY_LIMIT,
-                    type: foodType
-                }
+                query: queryOption
             })
             .then(res => {
                 console.log('find res', res)
+                if (res.total === 0) setHasData(false)
                 setTotal(res.total)
                 setCurrentSkip(prevState => prevState + QUERY_LIMIT)
                 return res
             })
-            .then(res => setRestaurants(prevState => [...prevState, ...res.data]))
+            .then(res => {
+                setLoading(false)
+                setRestaurants(prevState => [...prevState, ...res.data])
+            })
     }
 
     useEffect(() => {
+        // When foodType changes, reset currentSkip and remove unrelated data
+        setLoading(true)
+        setHasData(true)
+        setCurrentSkip(0)
+        setRestaurants([])
+
         let observer = new IntersectionObserver(
             entries => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        queryRestaurants(foodType)
+                        queryRestaurants(0)
                         observer = observer.disconnect()
                     }
                 })
@@ -50,9 +69,14 @@ function RestaurantBlockContainer({ foodType, desired }) {
         // query restuarants
         // queryRestaurants(foodType)
         return () => (observer = observer && observer.disconnect())
-    }, [foodType])
+    }, [foodType, pricePref, searchText])
+
     return (
-        <Box ref={thisRef} sx={{minHeight: 400}}>
+        <Box ref={thisRef} sx={{
+            minHeight: 400,
+            display: hasData ? 'block' : 'none',
+            visibility: loading ? 'hidden' : 'visible'
+        }}>
             <Typography variant='h5' color='secondary' sx={{fontWeight: 'bold'}}>
                 {foodTypesToLabel[foodType]}
             </Typography>
@@ -66,7 +90,7 @@ function RestaurantBlockContainer({ foodType, desired }) {
             {
                 currentSkip < total &&
                 <Stack direction='row' justifyContent='center'>
-                    <LoadMoreButton onClick={() => queryRestaurants(foodType)}/>
+                    <LoadMoreButton onClick={() => queryRestaurants()}/>
                 </Stack>
             }
         </Box>

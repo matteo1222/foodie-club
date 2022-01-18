@@ -10,7 +10,7 @@ import Slider from '@mui/material/Slider'
 import { foodTypes } from '../../constants/foodTypes'
 import './index.css'
 
-const FilterMenu = () => {
+const FilterMenuGroup = () => {
     const [anchorEl, setAnchorEl] = useState(null)
     const [timePref, setTimePref] = useState([])
     const [groupRange, setGroupRange] = useState([3, 6])
@@ -193,4 +193,4 @@ const FilterMenu = () => {
     )
 }
 
-export default FilterMenu
+export default FilterMenuGroup
