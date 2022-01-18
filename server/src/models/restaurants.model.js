@@ -18,6 +18,8 @@ module.exports = function (app) {
         table.enu('type', foodTypes);
         table.float('rating');
         table.string('image_source');
+        table.timestamp('created_at').defaultTo(new Date.now().getTime())
+        table.timestamp('updated_at').defaultTo(new Date.now().getTime())
       })
         .then(() => console.log(`Created ${tableName} table`))
         .catch(e => console.error(`Error creating ${tableName} table`, e));

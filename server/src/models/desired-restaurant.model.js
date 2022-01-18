@@ -21,6 +21,7 @@ module.exports = function (app) {
           .inTable('restaurants')
         
         table.unique(['user_id', 'restaurant_id'])
+        table.timestamp('created_at').defaultTo(new Date.now().getTime())
       })
         .then(() => console.log(`Created ${tableName} table`))
         .catch(e => console.error(`Error creating ${tableName} table`, e));

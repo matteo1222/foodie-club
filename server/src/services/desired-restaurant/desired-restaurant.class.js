@@ -15,11 +15,6 @@ exports.DesiredRestaurant = class DesiredRestaurant extends Service {
         throw new Error('No user_id is specified')
       }
       const { Model } = this.options
-      // const desiredRestaurantsOfSingleUser = await Model('restaurants')
-      //   .whereIn(
-      //     'id',
-      //     Model('desired_restaurant').select('restaurant_id').where('user_id', params.query.user_id)
-      //   )
       const desiredRestaurantsOfSingleUser = await Model('desired_restaurant')
         .join('restaurants', 'restaurant_id', '=', 'restaurants.id')
         .select(

@@ -15,7 +15,8 @@ module.exports = function (app) {
         table.string('name').notNullable();
         table.string('email').unique().notNullable();
         table.string('password').notNullable();
-
+        table.timestamp('created_at').defaultTo(new Date.now().getTime())
+        table.timestamp('updated_at').defaultTo(new Date.now().getTime())
         table.string('googleId');
       
         table.string('facebookId');
