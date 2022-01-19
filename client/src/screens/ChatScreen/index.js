@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, createRef } from 'react'
 import { useParams } from 'react-router-dom'
 import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
@@ -10,36 +10,118 @@ import ChatInput from '../../components/ChatInput'
 import IconButton from '@mui/material/IconButton'
 import SendIcon from '@mui/icons-material/Send'
 import Button from '@mui/material/Button'
+import client from '../../feathers/feathers-client'
+import { useAuth } from '../../components/auth'
 
 function ChatScreen() {
+    const auth = useAuth()
     const chatInputRef = useRef(null)
+    const messageBoxRef = useRef(null)
+    const messagesRef = useRef(null)
+    const [messages, setMessages] = useState([])
     const [chatValue, setChatValue] = useState('')
     let params = useParams()
+    const groupId = params.groupId
+    console.log('params', groupId)
 
     const handleChatInputChange = (event) => {
         setChatValue(event.target.value)
     }
+
+    // const handleKeyPress = (event) => {
+    //     if (event.key === 'Enter') {
+    //         event.preventDefault()
+    //         handleMessageSend()
+    //     }
+    // }
+
+    const handleMessageSend = () => {
+        if (chatValue.trim() === '') {
+            return
+        }
+        return client
+            .service('messages')
+            .create({
+                text: chatValue.trim(),
+                user_id: auth.user.id,
+                group_id: groupId
+            })
+            .then(() => setChatValue(''))
+            .catch(err => console.error('Error sending message:', err))
+    }
+    const scrollToBottom = () => {
+        console.log('messagesRef', messagesRef)
+        if (messagesRef.current && messageBoxRef.current) {
+            const { height } = messagesRef.current.getBoundingClientRect()
+            messageBoxRef.current.scrollTo({ top: height, behavior: 'smooth' })
+        }
+    }
+    const onCreated = (created) => {
+        console.log('created', created)
+        setMessages(prevState => [...prevState, created])
+        scrollToBottom()
+    }
+
+    const queryMessages = () => {
+        return client
+            .service('messages')
+            .find({
+                query: {
+                    group_id: groupId
+                }
+            })
+            .then(res => setMessages(res))
+            .catch(err => console.error('Error fetching messages:', err))
+    }
+
+    useEffect(() => {
+        // clear past messages
+        setMessages([])
+        // query past messages
+        queryMessages()
+        // set up listener for create/remove event
+        client
+            .service('messages')
+            .on('created', onCreated)
+        return (() => {
+            client
+                .service('messages')
+                .removeListener('created')
+        })
+    }, [groupId])
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [messagesRef, messageBoxRef])
+
     return (
         <Grid container sx={{
             background: COLORS.lightGrey,
             width: '100%',
-            padding: 2
+            paddingY: 2,
+            paddingX: 2
         }}>
             <Grid item sm={12}>
-                <Stack direction='column' sx={{
-                    height: 500
+                <Stack direction='column' ref={messageBoxRef} sx={{
+                    height: 500,
+                    overflowY: 'scroll',
+                    marginBottom: 5
                 }}>
-                    {chatMessages.map(el => {
-                        return (
-                            <ChatMessage
-                                username={el.username}
-                                userAvatarSrc={el.userAvatarSrc}
-                                message={el.message}
-                                isMine={el.userId === '2'}
-                                key={el.userId}
-                            />
-                        )
-                    })}
+                    <div ref={messagesRef}>
+                        {
+                            messages.map((el, idx) => {
+                                return (
+                                    <ChatMessage
+                                        username={el.username}
+                                        userAvatarSrc={`$https://avatars.dicebear.com/api/human/robot${el.userId}.svg`}
+                                        message={el.text}
+                                        isMine={el.userId === auth.user.id}
+                                        key={idx}
+                                    />
+                                )
+                            })
+                        }
+                    </div>
                 </Stack>
             </Grid>
             <Grid item sm={12}>
@@ -47,9 +129,15 @@ function ChatScreen() {
                     <ChatInput
                         inputRef={chatInputRef}
                         onChange={handleChatInputChange}
+                        // onKeyPress={handleKeyPress}
                         value={chatValue}
                     />
-                    <IconButton aria-label='chat-send-button' sx={{marginX: 2}}>
+                    <IconButton
+                        aria-label='chat-send-button'
+                        sx={{marginX: 2}}
+                        disabled={chatValue === ''}
+                        onClick={handleMessageSend}
+                    >
                         <SendIcon/>
                     </IconButton>
                 </Stack>

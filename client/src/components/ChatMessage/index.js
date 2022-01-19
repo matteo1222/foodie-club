@@ -3,8 +3,8 @@ import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import SendIcon from '@mui/icons-material/Send'
+// import IconButton from '@mui/material/IconButton'
+// import SendIcon from '@mui/icons-material/Send'
 import { COLORS } from '../../constants/colors'
 
 function ChatMessage({username, userAvatarSrc, message, isMine}) {
@@ -31,7 +31,10 @@ function ChatMessage({username, userAvatarSrc, message, isMine}) {
                 maxWidth: 400,
                 marginLeft: isMine ? 'auto' : 0
             }}>
-                <Typography variant='body1'>{message}</Typography>
+                <Typography variant='body1' sx={{
+                    whiteSpace: 'normal',
+                    overflowWrap: 'break-word'
+                }}>{message}</Typography>
             </Box>
             
         </Stack>

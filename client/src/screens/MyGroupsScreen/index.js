@@ -38,12 +38,6 @@ function MyGroupsScreen(props) {
     useEffect(() => {
         queryGroups()
     }, [])
-    useEffect(() => {
-        if (groups.length > 0) {
-            setSelectedGroup(0)
-            navigate('/my-groups/0')
-        }
-    }, [groups])
 
     return (
         <Grid container>

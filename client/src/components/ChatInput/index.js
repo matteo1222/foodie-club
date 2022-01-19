@@ -2,7 +2,7 @@ import React from 'react'
 import TextField from '@mui/material/TextField'
 import { COLORS } from '../../constants/colors'
 
-function ChatInput({ inputRef, onChange, value }) {
+function ChatInput({ inputRef, onChange, onKeyPress, value }) {
     return (
         <TextField
             id='chat-input'
@@ -10,7 +10,10 @@ function ChatInput({ inputRef, onChange, value }) {
             multiline
             maxRows={4}
             inputRef={inputRef}
+            // helperText='Shift + Enter to change line'
+            value={value}
             onChange={onChange}
+            // onKeyPress={onKeyPress}
             InputProps={{
                 sx: {
                     background: COLORS.white,
