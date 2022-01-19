@@ -16,6 +16,7 @@ exports.DesiredRestaurant = class DesiredRestaurant extends Service {
       }
       const { Model } = this.options
       const desiredRestaurantsOfSingleUser = await Model('desired_restaurant')
+        .where('user_id', params.query.user_id)
         .join('restaurants', 'restaurant_id', '=', 'restaurants.id')
         .select(
           'desired_restaurant.id',

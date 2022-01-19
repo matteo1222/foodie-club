@@ -15,15 +15,40 @@ exports.Groups = class Groups extends Service {
         throw new Error('No user_id is specified')
       }
       const { Model } = this.options
-      const groups = await Model('desired_restaurant')
-        .join('restaurants', 'restaurant_id', '=', 'restaurants.id')
+      const groups = await Model('groups')
         .select(
-          'desired_restaurant.id',
-          'desired_restaurant.user_id',
-          'desired_restaurant.restaurant_id',
-          'restaurants.name',
-          'restaurants.image_source'
+          'groups.datetime',
+          'groups.id',
+          'restaurants.name as restaurant',
+          'restaurants.price as price',
+          'restaurants.image_source as image_source',
+          Model.raw('ARRAY_AGG (users.name) users')
         )
+        .from('groups')
+        .whereIn('groups.id', 
+          Model('users_groups').select('group_id').where('user_id', params.query.user_id)
+        )
+        .innerJoin('restaurants', 'restaurants.id', 'groups.restaurant_id')
+        .innerJoin('users_groups', 'groups.id', 'users_groups.group_id')
+        .innerJoin('users', 'users.id', 'users_groups.user_id')
+        .groupBy('groups.datetime')
+        .groupBy('groups.id')
+        .groupBy('restaurant')
+        .groupBy('price')
+        .groupBy('image_source')
+      // const groups = await Model('users_groups')
+      //   .where('user_id', params.query.user_id)
+      //   .join('groups', 'group_id', '=', 'groups.id')
+      //   .join('restaurants', 'groups.restaurant_id', '=', 'restaurants.id')
+      //   .select(
+      //     'users_groups.id',
+      //     'users_groups.user_id',
+      //     'users_groups.group_id',
+      //     'groups.datetime',
+      //     'restaurants.name',
+      //     'restaurants.price',
+      //     'restaurants.image_source'
+      //   )
       
       return groups
     }
@@ -34,15 +59,28 @@ exports.Groups = class Groups extends Service {
         throw new Error('No user_id is specified')
       }
       const { Model } = this.options
-      const groups = await Model('desired_restaurant')
-        .join('restaurants', 'restaurant_id', '=', 'restaurants.id')
+      const groups = await Model('groups')
         .select(
-          'desired_restaurant.id',
-          'desired_restaurant.user_id',
-          'desired_restaurant.restaurant_id',
-          'restaurants.name',
-          'restaurants.image_source'
+          'groups.datetime',
+          'groups.id',
+          'restaurants.name as restaurant',
+          'restaurants.price as price',
+          'restaurants.image_source as image_source',
+          Model.raw('ARRAY_AGG (users.name) users')
         )
+        .from('groups')
+        .whereNotIn('groups.id', 
+          Model('users_groups').select('group_id').where('user_id', params.query.user_id)
+        )
+        .innerJoin('restaurants', 'restaurants.id', 'groups.restaurant_id')
+        .innerJoin('users_groups', 'groups.id', 'users_groups.group_id')
+        .whereNot('users_groups.user_id', params.query.user_id)
+        .innerJoin('users', 'users.id', 'users_groups.user_id')
+        .groupBy('groups.datetime')
+        .groupBy('groups.id')
+        .groupBy('restaurant')
+        .groupBy('price')
+        .groupBy('image_source')
       
       return groups
     }
@@ -55,12 +93,32 @@ exports.Groups = class Groups extends Service {
     if (data?.user_id === undefined) {
       throw new Error('No user_id is specified')
     }
+    // is joining a group
+    if (params.query?.join) {
+      if (data?.group_id === undefined) {
+        throw new Error('No group_id is specified')
+      }
+      const { Model } = this.options
+
+      try {
+        const created = await Model('users_groups').insert({
+          user_id: data.user_id,
+          group_id: data.group_id
+        })
+        return created
+      } catch (err) {
+        throw err
+      }
+    }
+
+    // is creating a group
     if (data?.restaurant_id === undefined) {
       throw new Error('No restaurant_id is specified')
     }
     if (data?.datetime === undefined) {
       throw new Error('No datetime is specified')
     }
+
     try {
       const created = await super.create({
         owner_id: data.user_id,

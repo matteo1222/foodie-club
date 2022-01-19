@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
@@ -9,10 +9,31 @@ import GroupBlock from '../../components/GroupBlock'
 import SearchBar from '../../components/SearchBar'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import FilterMenuGroup from '../../components/FilterMenuGroup'
+import { useAuth } from '../../components/auth'
+import client from '../../feathers/feathers-client'
 
 function JoinGroupScreen() {
+    const auth = useAuth()
+    const [groups, setGroups] = useState([])
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
-
+    const queryGroups = () => {
+        client
+            .service('groups')
+            .find({
+                query: {
+                    isMine: false,
+                    user_id: auth.user.id
+                }
+            })
+            .then(res => {
+                console.log('group res', res)
+                return res
+            })
+            .then(res => setGroups(res))
+    }
+    useEffect(() => {
+        queryGroups()
+    }, [])
     return (
         <Box component='main'>
             <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -33,9 +54,12 @@ function JoinGroupScreen() {
                     French
                 </Typography>
                 <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                    {new Array(5).fill(null).map((el, idx) => {
+                    {groups.map((el) => {
                         return (
-                            <GroupBlock key={idx}/>
+                            <GroupBlock
+                                group={el}
+                                key={el.id}
+                            />
                         )
                     })}
                 </Box>

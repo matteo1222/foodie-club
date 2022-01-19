@@ -7,35 +7,57 @@ import { theme } from '../../constants/theme'
 import MyGroupBlock from '../../components/MyGroupBlock'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../components/auth'
+import client from '../../feathers/feathers-client'
 
 function MyGroupsScreen(props) {
-    const [groups, setGroups] = useState([0])
+    const auth = useAuth()
+    const [groups, setGroups] = useState([])
     const [selectedGroup, setSelectedGroup] = useState(null)
     const navigate = useNavigate()
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
     const handleClick = (id) => {
         setSelectedGroup(id)
     }
-
+    
+    const queryGroups = () => {
+        client
+            .service('groups')
+            .find({
+                query: {
+                    isMine: true,
+                    user_id: auth.user.id
+                }
+            })
+            .then(res => {
+                console.log('group res', res)
+                return res
+            })
+            .then(res => setGroups(res))
+    }
+    useEffect(() => {
+        queryGroups()
+    }, [])
     useEffect(() => {
         if (groups.length > 0) {
             setSelectedGroup(0)
             navigate('/my-groups/0')
         }
-    }, [])
+    }, [groups])
 
     return (
         <Grid container>
             <Grid item sm={12} md={6}>
                 <Typography variant='h4' sx={{fontWeight: 'bold'}}>My Groups</Typography>
                 <Stack direction='column' sx={{paddingY: 2}}>
-                    {new Array(5).fill(null).map((el, idx) => {
+                    {groups.map((el) => {
                         return (
                             <MyGroupBlock
-                                key={idx}
-                                id={idx}
-                                selected={selectedGroup === idx}
-                                onClick={() => handleClick(idx)}
+                                key={el.id}
+                                id={el.id}
+                                selected={selectedGroup === el.id}
+                                group={el}
+                                onClick={() => handleClick(el.id)}
                             />
                         )
                     })}

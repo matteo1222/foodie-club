@@ -7,12 +7,10 @@ import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
 import { COLORS } from '../../constants/colors'
 import { Link as RouterLink } from 'react-router-dom'
+import dayjs from 'dayjs'
 import './index.css'
 
-function MyGroupBlock({id, selected, onClick}) {
-    const handleGroupJoin = () => {
-        console.log('join')
-    }
+function MyGroupBlock({id, selected, onClick, group}) {
     return (
         <Box
             component={RouterLink}
@@ -33,23 +31,23 @@ function MyGroupBlock({id, selected, onClick}) {
         >
             <Grid container>
                 <Grid item xs={5}>
-                    <img alt='restaurant' className='image' src='https://images.squaremeal.co.uk/cloud/restaurants/10712/images/the-ninth-1_09092019021238.jpg?w=928&h=522&fit=crop'/>
+                    <img alt='restaurant' className='image' src={group.image_source}/>
                 </Grid>
                 <Grid item xs={7}>
                     <Grid container alignItems='center' rowSpacing={1} sx={{padding: 2}}>
                         <Grid item xs={10}>
                             <Typography variant='subtitle1' sx={{fontWeight: 'bold'}}>
-                                The Ninth
+                                {group.restaurant}
                             </Typography>
                         </Grid>
                         <Grid item xs={2}>
                             <Typography variant='body2'>
-                                ££
+                                {group.price}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Chip
-                                label='Jan. 8, 2022 Daytime'
+                                label={dayjs(group.datetime).format('MMM. D, YYYY H:mm')}
                                 variant='outlined'
                                 size='small'
                                 sx={{
@@ -61,7 +59,7 @@ function MyGroupBlock({id, selected, onClick}) {
                         <Grid item xs={12}>
                             <Stack direction="row" spacing={1}>
                                 <Typography variant='body2' sx={{fontWeight: 'bold'}}>
-                                    4 people
+                                    {`${group.users.length} ${group.users.length > 1 ? 'people' : 'person'}`}
                                 </Typography>
                                 <Typography variant='body2'>
                                     already joined

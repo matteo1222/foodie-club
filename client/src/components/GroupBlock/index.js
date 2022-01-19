@@ -6,11 +6,25 @@ import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
 import { COLORS } from '../../constants/colors'
+import dayjs from 'dayjs'
+import { useAuth } from '../auth'
+import client from '../../feathers/feathers-client'
 import './index.css'
 
-function GroupBlock() {
+function GroupBlock({ group }) {
+    const auth = useAuth()
     const handleGroupJoin = () => {
         console.log('join')
+        client
+            .service('groups')
+            .create({
+                user_id: auth.user.id,
+                group_id: group.id
+            }, {
+                query: {
+                    join: true
+                }
+            })
     }
     return (
         <Box sx={{
@@ -23,23 +37,23 @@ function GroupBlock() {
         }}>
             <Grid container>
                 <Grid item xs={5}>
-                    <img alt='restaurant' className='image' src='https://images.squaremeal.co.uk/cloud/restaurants/10712/images/the-ninth-1_09092019021238.jpg?w=928&h=522&fit=crop'/>
+                    <img alt='restaurant' className='image' src={group.image_source}/>
                 </Grid>
                 <Grid item xs={7}>
                     <Grid container alignItems='center' rowSpacing={1} sx={{padding: 2}}>
                         <Grid item xs={10}>
                             <Typography variant='subtitle1' sx={{fontWeight: 'bold'}}>
-                                The Ninth
+                                {group.restaurant}
                             </Typography>
                         </Grid>
                         <Grid item xs={2}>
                             <Typography variant='body2'>
-                                ££
+                                {group.price}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Chip
-                                label='Jan. 8, 2022 Daytime'
+                                label={dayjs(group.datetime).format('MMM. D, YYYY H:mm')}
                                 variant='outlined'
                                 color='secondary'
                                 size='small'
@@ -48,7 +62,7 @@ function GroupBlock() {
                         <Grid item xs={12}>
                             <Stack direction="row" spacing={1}>
                                 <Typography variant='body2' sx={{fontWeight: 'bold'}}>
-                                    4 people
+                                    {`${group.users.length} ${group.users.length > 1 ? 'people' : 'person'}`}
                                 </Typography>
                                 <Typography variant='body2'>
                                     already joined
