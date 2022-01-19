@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
@@ -10,11 +10,25 @@ import './index.css'
 import { foodTypesToLabel } from '../../constants/foodTypesToLabel'
 import { useAuth } from '../auth'
 import client from '../../feathers/feathers-client'
+import DateTimePickerModal from '../DateTimePickerModal'
 
 function RestaurantBlock ({ restaurant, disabled }) {
     const auth = useAuth()
+    const [open, setOpen] = useState(false)
+    const [dateTime, setDateTime] = useState(new Date())
+    const handleOpenModal = () => {
+        setOpen(true)
+    }
+    const handleCloseModal = () => {
+        setOpen(false)
+    }
+    const handleDateTimeChange = (newValue) => {
+        setDateTime(newValue)
+    }
     const handleStartGroup = () => {
         console.log('join')
+        setOpen(false)
+        // Add desired restaurant
         client
             .service('desired-restaurant')
             .create({
@@ -25,7 +39,18 @@ function RestaurantBlock ({ restaurant, disabled }) {
                     getRestaurants: true
                 }
             })
-            .catch(err => console.error('Error creating desired restaurants', err))
+            .catch(err => console.error('Error creating desired restaurant', err))
+        
+        // Create a group
+        console.log('dateTime', dateTime.toISOString())
+        client
+            .service('groups')
+            .create({
+                user_id: auth.user.id,
+                restaurant_id: restaurant.id,
+                datetime: dateTime.toISOString()
+            })
+            .catch(err => console.error('Error creating group', err))
     }
     return (
         <Box sx={{
@@ -80,7 +105,7 @@ function RestaurantBlock ({ restaurant, disabled }) {
                                 aria-label='start-a-group'
                                 size='small'
                                 disabled={disabled}
-                                onClick={handleStartGroup}
+                                onClick={handleOpenModal}
                                 sx={{
                                     borderRadius: 20,
                                     color: COLORS.white
@@ -90,6 +115,13 @@ function RestaurantBlock ({ restaurant, disabled }) {
                     </Grid>
                 </Grid>
             </Grid>
+            <DateTimePickerModal
+                dateTime={dateTime}
+                handleDateTimeChange={handleDateTimeChange}
+                open={open}
+                handleClose={handleCloseModal}
+                handleSubmit={handleStartGroup}
+            />
         </Box>
     )
 }

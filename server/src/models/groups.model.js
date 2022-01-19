@@ -11,13 +11,17 @@ module.exports = function (app) {
     if(!exists) {
       db.schema.createTable(tableName, table => {
         table.increments('id').primary()
-        table.date('datetime').notNullable()
+        table.datetime('datetime').notNullable()
+        table
+          .integer('owner_id')
+          .references('id')
+          .inTable('users')
         table
           .integer('restaurant_id')
           .references('id')
           .inTable('restaurants')
-        table.timestamp('created_at').defaultTo(new Date.now().getTime())
-        table.timestamp('updated_at').defaultTo(new Date.now().getTime())
+        table.timestamp('created_at').defaultTo(db.fn.now())
+        table.timestamp('updated_at').defaultTo(db.fn.now())
       })
         .then(() => console.log(`Created ${tableName} table`))
         .catch(e => console.error(`Error creating ${tableName} table`, e));
@@ -38,7 +42,7 @@ module.exports = function (app) {
           .references('id')
           .inTable('groups')
         table.unique(['user_id', 'group_id'])
-        table.timestamp('created_at').defaultTo(new Date.now().getTime())
+        table.timestamp('created_at').defaultTo(db.fn.now())
       })
         .then(() => console.log(`Created ${relationTableName} table`))
         .catch(e => console.error(`Error creating ${relationTableName} table`, e));

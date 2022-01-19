@@ -32,7 +32,7 @@ exports.DesiredRestaurant = class DesiredRestaurant extends Service {
   }
 
   async create (data, params) {
-    // find all restaurants a user desires
+    // create a restaurants a user desires
     if (params.query?.getRestaurants) {
       if (data?.user_id === undefined) {
         throw new Error('No user_id is specified')
