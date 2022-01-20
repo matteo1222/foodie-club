@@ -1,3 +1,5 @@
+const { connection } = require("@feathersjs/authentication/lib/hooks");
+
 module.exports = function(app) {
   if(typeof app.channel !== 'function') {
     // If no real-time functionality has been configured just return
@@ -9,18 +11,25 @@ module.exports = function(app) {
     app.channel('anonymous').join(connection);
   });
 
-  app.on('login', (authResult, { connection }) => {
+  app.on('login', async (authResult, { connection }) => {
     // connection can be undefined if there is no
     // real-time connection, e.g. when logging in via REST
     if(connection) {
       // Obtain the logged in user from the connection
       // const user = connection.user;
-      
+
       // The connection is no longer anonymous, remove it
       app.channel('anonymous').leave(connection);
 
       // Add it to the authenticated user channel
       app.channel('authenticated').join(connection);
+
+      // Join group channels if the user has joined groups
+      const db = app.get('knexClient')
+      const groups = await db('users_groups')
+        .select('group_id')
+        .where('user_id', connection.user.id)
+      groups.forEach(group => app.channel(`groups/${group.group_id}`).join(connection))
 
       // Channels can be named anything and joined on any condition 
       
@@ -46,6 +55,14 @@ module.exports = function(app) {
     // e.g. to publish all service events to all authenticated users use
     return app.channel('authenticated');
   });
+
+  app.service('messages').publish((data, context) => {
+    return app.channel(`groups/${data.group_id}`)
+  })
+
+  app.service('groups').on('created', (data, { params }) => {
+    app.channel(`groups/${data.id}`).join(params.connection)
+  })
 
   // Here you can also add service specific event publishers
   // e.g. the publish the `users` service `created` event to the `admins` channel

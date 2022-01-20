@@ -43,7 +43,7 @@ exports.Messages = class Messages extends Service {
     try {
       const created = await super.create(data, params)
       const createdMessage = await Model('messages')
-        .select('messages.text', 'created_at', 'users.name as username', 'users.id as userId')
+        .select('messages.text', 'created_at', 'users.name as username', 'users.id as userId', 'messages.group_id')
         .where('messages.id', created.id)
         .innerJoin('users', 'users.id', 'messages.user_id')
       return createdMessage

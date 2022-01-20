@@ -36,19 +36,6 @@ exports.Groups = class Groups extends Service {
         .groupBy('restaurant')
         .groupBy('price')
         .groupBy('image_source')
-      // const groups = await Model('users_groups')
-      //   .where('user_id', params.query.user_id)
-      //   .join('groups', 'group_id', '=', 'groups.id')
-      //   .join('restaurants', 'groups.restaurant_id', '=', 'restaurants.id')
-      //   .select(
-      //     'users_groups.id',
-      //     'users_groups.user_id',
-      //     'users_groups.group_id',
-      //     'groups.datetime',
-      //     'restaurants.name',
-      //     'restaurants.price',
-      //     'restaurants.image_source'
-      //   )
       
       return groups
     }

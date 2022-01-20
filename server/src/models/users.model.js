@@ -9,12 +9,15 @@ module.exports = function (app) {
   const tableName = 'users';
   
   db.schema.hasTable(tableName).then(exists => {
+    // TODO: add text limit for messages and about me
     if(!exists) {
       db.schema.createTable(tableName, table => {
         table.increments('id').primary();
         table.string('name').notNullable();
         table.string('email').unique().notNullable();
         table.string('password').notNullable();
+        table.text('about_me')
+        table.string('profile_img_source')
         table.timestamp('created_at').defaultTo(new Date.now().getTime())
         table.timestamp('updated_at').defaultTo(new Date.now().getTime())
         table.string('googleId');

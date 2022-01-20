@@ -12,4 +12,17 @@ client.configure(
     })
 );
 
+// TODO: add redirection to /login page when token expired
+client.hooks({
+    error (context) {
+        const { error } = context
+
+        if (error.code === 401) {
+            client.emit('authFailure', error)
+        }
+
+        return context
+    }
+})
+
 export default client;

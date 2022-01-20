@@ -118,6 +118,7 @@ function PreferencesScreen() {
                 {foodTypes.map(el => {
                     return (
                         <Chip
+                            key={el.value}
                             label={el.label}
                             variant='outlined'
                             onClick={() => {handleFoodClick(el.id)}}

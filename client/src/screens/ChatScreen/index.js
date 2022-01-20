@@ -21,8 +21,7 @@ function ChatScreen() {
     const [messages, setMessages] = useState([])
     const [chatValue, setChatValue] = useState('')
     let params = useParams()
-    const groupId = params.groupId
-    console.log('params', groupId)
+    const groupId = Number(params.groupId)
 
     const handleChatInputChange = (event) => {
         setChatValue(event.target.value)
@@ -58,6 +57,10 @@ function ChatScreen() {
     }
     const onCreated = (created) => {
         console.log('created', created)
+        console.log('groupId', groupId)
+        if (created.group_id !== groupId) {
+            return
+        }
         setMessages(prevState => [...prevState, created])
         scrollToBottom()
     }
