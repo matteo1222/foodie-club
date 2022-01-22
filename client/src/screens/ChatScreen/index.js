@@ -113,10 +113,12 @@ function ChatScreen() {
                     <div ref={messagesRef}>
                         {
                             messages.map((el, idx) => {
+                                console.log('message el', el)
                                 // TODO: make image only need to fetch once
                                 return (
                                     <ChatMessage
                                         username={el.username}
+                                        userId={el.userId}
                                         userAvatarSrc={`http://localhost:3030/${el.userAvatarSrc}`}
                                         message={el.text}
                                         isMine={el.userId === auth.user.id}

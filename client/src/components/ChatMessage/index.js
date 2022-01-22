@@ -3,11 +3,10 @@ import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography'
-// import IconButton from '@mui/material/IconButton'
-// import SendIcon from '@mui/icons-material/Send'
+import { Link as RouterLink } from 'react-router-dom'
 import { COLORS } from '../../constants/colors'
 
-function ChatMessage({username, userAvatarSrc, message, isMine}) {
+function ChatMessage({userId, username, userAvatarSrc, message, isMine}) {
     return (
         <Stack direction='row' alignItems='center' sx={{
             marginX: 2,
@@ -18,7 +17,15 @@ function ChatMessage({username, userAvatarSrc, message, isMine}) {
                 <Stack direction='column' alignItems='center' sx={{
                     marginRight: 1.5
                 }}>
-                    <Avatar alt={username} src={userAvatarSrc}/>
+                    <Avatar
+                        component={RouterLink}
+                        to={`/profile/${userId}`}
+                        alt={username}
+                        src={userAvatarSrc}
+                        sx={{
+                            textDecoration: 'none'
+                        }}
+                    />
                     <Typography variant='body2'>{username}</Typography>
                 </Stack>
             }

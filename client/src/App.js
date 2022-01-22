@@ -14,6 +14,7 @@ import MyGroupsScreen from './screens/MyGroupsScreen';
 import ChatScreen from './screens/ChatScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import PreferencesScreen from './screens/PreferencesScreen';
+import NotFoundScreen from './screens/NotFoundScreen';
 import RootScreen from './screens/RootScreen';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Outlet } from 'react-router';
@@ -67,12 +68,16 @@ function App() {
               <Route path='/my-groups' element={<MyGroupsScreen><Outlet/></MyGroupsScreen>}>
                 <Route path=':groupId' element={<ChatScreen />} />
               </Route>
-              <Route path='/profile' element={<ProfileScreen />} />
+              <Route path='/profile/:userId' element={<ProfileScreen />} />
               <Route path='/preferences' element={<PreferencesScreen />} />
             </Route>
             <Route
+              path='/404'
+              element={<NotFoundScreen/>}
+            />
+            <Route
               path='*'
-              element={<Navigate to='/login' />}
+              element={<NotFoundScreen/>}
             />
           </Routes>
         </ThemeProvider>

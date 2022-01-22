@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Grid from '@mui/material/Grid'
@@ -14,28 +15,62 @@ import './index.css'
 
 function ProfileScreen() {
     const auth = useAuth()
+    let params = useParams()
+    const navigate = useNavigate()
+    const paramsUserId = Number(params.userId)
     const [imgSrc, setImgSrc] = useState(null)
-    const [email, setEmail] = useState('johndoe@gmail.com')
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [aboutMe, setAboutMe] = useState('')
     const [showSnackbar, setShowSnackbar] = useState(false)
 
     const queryAvatar = () => {
+        // TODO: change user model to include upload_id, so we dont have to keep querying if users dont have photo
         client
             .service('uploads')
-            .get(auth.user.id)
+            .get(paramsUserId)
             .then(res => {
                 if (res.path) {
+                    console.log('res.path', res.path)
                     // remove public/
                     const imgURL = `http://localhost:3030/${res.path}`
                     setImgSrc(imgURL)
+                } else {
+                    // TODO: change this
+                    setImgSrc('https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png')
                 }
             })
-            .catch(err => console.error('Error fetching user avatar', err))
+            .catch(err => {
+                if (err.code !== 404) {
+                    console.error('Error fetching user avatar', err)
+                }
+                setImgSrc('https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png')
+            })
+    }
+
+    const queryUser = () => {
+        client
+            .service('users')
+            .get(paramsUserId)
+            .then(res => {
+                setUsername(res.name)
+                if (res.about_me) {
+                    setAboutMe(res.about_me)
+                }
+            })
+            .catch(err => {
+                if (err.code === 404) {
+                    navigate('/404', { replace: true })
+                }
+                console.error('Error fetching user: ', err)
+            })
     }
 
     useEffect(() => {
-        setEmail(auth.user.email)
-        setAboutMe(auth.user.about_me ? auth.user.about_me : '')
+        queryUser()
+        if (paramsUserId === auth.user.id) {
+            setEmail(auth.user.email)
+        }
         queryAvatar()
     }, [])
 
@@ -111,7 +146,7 @@ function ProfileScreen() {
                             hidden
                             type='file'
                             accept='image/*'
-                            // disabled={}
+                            disabled={paramsUserId !== auth.user.id}
                             onChange={handlePhotoChange}
                         />
                         {
@@ -129,23 +164,28 @@ function ProfileScreen() {
                             <AddIcon sx={{fontSize: 40}}/>
                         }
                     </Box>
-                    <Typography variant='h5' sx={{fontWeight: 'bold', marginY: 2}}>{auth.user.name}</Typography>
-                    <TextField
-                        label='Email Address'
-                        name='email'
-                        helperText="Others won't be able to see your email."
-                        value={email}
-                        onChange={handleEmailChange}
-                        variant='standard'
-                        fullWidth
-                        margin='normal'
-                        id='email'
-                        autoComplete='email'
-                    />
+                    <Typography variant='h5' sx={{fontWeight: 'bold', marginY: 2}}>{username}</Typography>
+                    {
+                        paramsUserId === auth.user.id &&
+                        <TextField
+                            label='Email Address'
+                            name='email'
+                            helperText="Others won't be able to see your email."
+                            value={email}
+                            disabled={true}
+                            onChange={handleEmailChange}
+                            variant='standard'
+                            fullWidth
+                            margin='normal'
+                            id='email'
+                            autoComplete='email'
+                        />
+                    }
                     <TextField
                         label='About me'
                         name='about-me'
                         value={aboutMe}
+                        disabled={paramsUserId !== auth.user.id}
                         onChange={handleAboutMeChange}
                         variant='outlined'
                         fullWidth
@@ -156,19 +196,22 @@ function ProfileScreen() {
                         placeholder='Briefly introduce yourself to let people know more about you. This make it easier for you to find a foodie friend!'
                     />
                 </Grid>
-                <Grid item sm={12} sx={{display: 'flex', justifyContent: 'center'}}>
-                    <Button
-                        onClick={handleSubmit}
-                        variant='contained'
-                        sx={{
-                            marginTop: 3,
-                            marginBottom: 2,
-                            borderRadius: 20,
-                            paddingX: 3,
-                            marginX: 3
-                        }}
-                    >Save</Button>
-                </Grid>
+                {
+                    paramsUserId === auth.user.id &&
+                    <Grid item sm={12} sx={{display: 'flex', justifyContent: 'center'}}>
+                        <Button
+                            onClick={handleSubmit}
+                            variant='contained'
+                            sx={{
+                                marginTop: 3,
+                                marginBottom: 2,
+                                borderRadius: 20,
+                                paddingX: 3,
+                                marginX: 3
+                            }}
+                        >Save</Button>
+                    </Grid>
+                }
             </Grid>
             <Snackbar
                 open={showSnackbar}

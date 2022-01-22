@@ -68,7 +68,7 @@ function RootScreen(props) {
           </ListItemIcon>
           <ListItemText primary='Preferences' />
         </ListItem>
-        <ListItem button component={RouterLink} to='/profile'  key='Profile'>
+        <ListItem button component={RouterLink} to={`/profile/${auth.user.id}`}  key='Profile'>
           <ListItemIcon>
             <AccountBoxIcon sx={{color: COLORS.white}} />
           </ListItemIcon>
