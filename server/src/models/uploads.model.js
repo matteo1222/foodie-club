@@ -1,23 +1,23 @@
 /* eslint-disable no-console */
 
-// restaurants-model.js - A KnexJS
+// uploads-model.js - A KnexJS
 // 
 // See http://knexjs.org/
 // for more of what you can do here.
-const foodTypes = require('../constants/foodTypes')
-
 module.exports = function (app) {
   const db = app.get('knexClient');
-  const tableName = 'restaurants';
+  const tableName = 'uploads';
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.increments('id').primary();
-        table.string('name').notNullable();
-        table.string('price');
-        table.enu('type', foodTypes);
-        table.float('rating');
-        table.string('image_source');
+        table.integer('id').unique().primary()
+        table
+          .integer('user_id')
+          .references('id')
+          .inTable('users')
+          .unique()
+        table.string('name').notNullable()
+        table.string('path').notNullable()
         table.timestamp('created_at').defaultTo(db.fn.now())
         table.timestamp('updated_at').defaultTo(db.fn.now())
       })
@@ -25,7 +25,7 @@ module.exports = function (app) {
         .catch(e => console.error(`Error creating ${tableName} table`, e));
     }
   });
-  // TODO: Add access control
+  
 
   return db;
 };

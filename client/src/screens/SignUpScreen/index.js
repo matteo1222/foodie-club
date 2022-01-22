@@ -14,6 +14,7 @@ import { COLORS } from '../../constants/colors'
 import { useAuth } from '../../components/auth'
 
 function SignUpScreen() {
+    // TODO: add validation
     const auth = useAuth()
     const navigate = useNavigate()
     const [name, setName] = useState('')

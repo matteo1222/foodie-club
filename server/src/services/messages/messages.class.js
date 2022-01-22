@@ -17,9 +17,12 @@ exports.Messages = class Messages extends Service {
 
     try {
       const messages = await Model('messages')
-        .select('messages.text', 'created_at', 'users.name as username', 'users.id as userId')
+        .select('messages.text', 'messages.created_at', 'users.name as username', 'users.id as userId', 'uploads.path as userAvatarSrc')
         .where('messages.group_id', params.query.group_id)
-        .innerJoin('users', 'users.id', 'messages.user_id')
+        .leftJoin('users', 'messages.user_id', 'users.id')
+        .leftJoin('uploads', 'messages.user_id', 'uploads.id')
+        .orderBy('messages.created_at')
+      console.log('messages', messages)
       return messages
     } catch (err) {
       throw err
@@ -43,9 +46,10 @@ exports.Messages = class Messages extends Service {
     try {
       const created = await super.create(data, params)
       const createdMessage = await Model('messages')
-        .select('messages.text', 'created_at', 'users.name as username', 'users.id as userId', 'messages.group_id')
+        .select('messages.text', 'messages.created_at', 'users.name as username', 'users.id as userId', 'messages.group_id', 'uploads.path as userAvatarSrc')
         .where('messages.id', created.id)
-        .innerJoin('users', 'users.id', 'messages.user_id')
+        .leftJoin('users', 'messages.user_id', 'users.id')
+        .leftJoin('uploads', 'messages.user_id', 'uploads.id')
       return createdMessage
     } catch (err) {
       throw err

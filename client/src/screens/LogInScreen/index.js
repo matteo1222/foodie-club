@@ -23,6 +23,7 @@ function LogInScreen() {
     const handleEmailChange = (event) => {
         setEmail(event.target.value)
     }
+    // TODO: Add validation
     const handlePasswordChange = (event) => {
         setPassword(event.target.value)
     }

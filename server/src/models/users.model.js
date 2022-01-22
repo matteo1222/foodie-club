@@ -17,9 +17,8 @@ module.exports = function (app) {
         table.string('email').unique().notNullable();
         table.string('password').notNullable();
         table.text('about_me')
-        table.string('profile_img_source')
-        table.timestamp('created_at').defaultTo(new Date.now().getTime())
-        table.timestamp('updated_at').defaultTo(new Date.now().getTime())
+        table.timestamp('created_at').defaultTo(db.fn.now())
+        table.timestamp('updated_at').defaultTo(db.fn.now())
         table.string('googleId');
       
         table.string('facebookId');
