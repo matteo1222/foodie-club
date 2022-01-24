@@ -13,6 +13,7 @@ import { useAuth } from '../../components/auth'
 import client from '../../feathers/feathers-client'
 import GroupBlockContainer from '../../components/GroupBlockContainer'
 import UpcomingGroupBlockContainer from '../../components/UpComingGroupBlockContainer'
+import PopularGroupBlockContainer from '../../components/PopularGroupBlockContainer'
 
 function JoinGroupScreen() {
     // TODO: create a state with joined groups
@@ -68,6 +69,7 @@ function JoinGroupScreen() {
                 </Box>
             </Box> */}
             <UpcomingGroupBlockContainer />
+            <PopularGroupBlockContainer />
             <GroupBlockContainer foodType='french'/>
         </Box>
     )
