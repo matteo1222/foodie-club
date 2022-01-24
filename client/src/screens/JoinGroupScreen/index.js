@@ -11,8 +11,11 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import FilterMenuGroup from '../../components/FilterMenuGroup'
 import { useAuth } from '../../components/auth'
 import client from '../../feathers/feathers-client'
+import GroupBlockContainer from '../../components/GroupBlockContainer'
+import UpcomingGroupBlockContainer from '../../components/UpComingGroupBlockContainer'
 
 function JoinGroupScreen() {
+    // TODO: create a state with joined groups
     const auth = useAuth()
     const [groups, setGroups] = useState([])
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
@@ -49,7 +52,7 @@ function JoinGroupScreen() {
                     <FilterMenuGroup/>
                 </Stack>
             </Stack>
-            <Box sx={{padding: 2}}>
+            {/* <Box sx={{padding: 2}}>
                 <Typography variant='h5' color='secondary' sx={{fontWeight: 'bold'}}>
                     French
                 </Typography>
@@ -63,7 +66,9 @@ function JoinGroupScreen() {
                         )
                     })}
                 </Box>
-            </Box>
+            </Box> */}
+            <UpcomingGroupBlockContainer />
+            <GroupBlockContainer foodType='french'/>
         </Box>
     )
 }

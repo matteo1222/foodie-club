@@ -25,6 +25,7 @@ function ProfileScreen() {
     const [showSnackbar, setShowSnackbar] = useState(false)
 
     const queryAvatar = () => {
+        // TODO: Add image resize, validation in either client or server or both
         // TODO: change user model to include upload_id, so we dont have to keep querying if users dont have photo
         client
             .service('uploads')
@@ -35,7 +36,7 @@ function ProfileScreen() {
                     // remove public/
                     const imgURL = `http://localhost:3030/${res.path}`
                     setImgSrc(imgURL)
-                } else {
+                } else if (paramsUserId !== auth.user.id) {
                     // TODO: change this
                     setImgSrc('https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png')
                 }
