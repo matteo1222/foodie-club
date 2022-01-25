@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
 import { theme } from '../../constants/theme'
-import GroupBlock from '../../components/GroupBlock'
 import SearchBar from '../../components/SearchBar'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import FilterMenuGroup from '../../components/FilterMenuGroup'
@@ -14,30 +13,61 @@ import client from '../../feathers/feathers-client'
 import GroupBlockContainer from '../../components/GroupBlockContainer'
 import UpcomingGroupBlockContainer from '../../components/UpComingGroupBlockContainer'
 import PopularGroupBlockContainer from '../../components/PopularGroupBlockContainer'
+import { foodTypes } from '../../constants/foodTypes'
 
 function JoinGroupScreen() {
     // TODO: create a state with joined groups
     const auth = useAuth()
-    const [groups, setGroups] = useState([])
+    // const [groups, setGroups] = useState([])
+    const [joined, setJoined] = useState([])
+    const [foodPref, setFoodPref] = useState([])
+    const [pricePref, setPricePref] = useState([])
+    const [searchText, setSearchText] = useState('')
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
-    const queryGroups = () => {
-        client
-            .service('groups')
-            .find({
-                query: {
-                    isMine: false,
-                    user_id: auth.user.id
-                }
+    // const queryGroups = () => {
+    //     client
+    //         .service('groups')
+    //         .find({
+    //             query: {
+    //                 isMine: false,
+    //                 user_id: auth.user.id
+    //             }
+    //         })
+    //         .then(res => {
+    //             console.log('group res', res)
+    //             return res
+    //         })
+    //         .then(res => setGroups(res))
+    // }
+
+    const getFoodTypeContainer = () => {
+        if (foodPref.length === 0) {
+            return foodTypes.map(el => {
+                return (
+                    <GroupBlockContainer
+                        key={el.id}
+                        foodType={el.value}
+                        joined={joined}
+                        searchText={searchText}
+                        pricePref={pricePref}
+                    />
+                )
             })
-            .then(res => {
-                console.log('group res', res)
-                return res
-            })
-            .then(res => setGroups(res))
+        }
+        
+        return foodPref.map(el => {
+            return (
+                <GroupBlockContainer
+                    key={el.id}
+                    foodType={el}
+                    joined={joined}
+                    searchText={searchText}
+                    pricePref={pricePref}
+                />
+            )
+        })
     }
-    useEffect(() => {
-        queryGroups()
-    }, [])
+
     return (
         <Box component='main'>
             <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -68,9 +98,12 @@ function JoinGroupScreen() {
                     })}
                 </Box>
             </Box> */}
-            <UpcomingGroupBlockContainer />
-            <PopularGroupBlockContainer />
-            <GroupBlockContainer foodType='french'/>
+            <Box sx={{ padding: 2 }}>
+                <UpcomingGroupBlockContainer />
+                <PopularGroupBlockContainer />
+                {getFoodTypeContainer()}
+                <GroupBlockContainer foodType='french'/>
+            </Box>
         </Box>
     )
 }

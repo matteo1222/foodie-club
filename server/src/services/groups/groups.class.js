@@ -77,7 +77,7 @@ exports.Groups = class Groups extends Service {
         return groups
       }
 
-      if (params.query?.isPopular === true) {
+      else if (params.query?.isPopular === true) {
         const groups = await Model('groups')
           .select(
             'groups.datetime',
@@ -105,6 +105,35 @@ exports.Groups = class Groups extends Service {
           .limit(6)
         return groups
       }
+
+      else if (params.query?.type) {
+        const groups = await Model('groups')
+          .select(
+            'groups.datetime',
+            'groups.id',
+            'restaurants.name as restaurant',
+            'restaurants.price as price',
+            'restaurants.image_source as image_source',
+            Model.raw('ARRAY_AGG (users.name) users')
+          )
+          .from('groups')
+          .whereNotIn('groups.id', 
+            Model('users_groups').select('group_id').where('user_id', params.query.user_id)
+          )
+          .where('restaurants.type', params.query.type)
+          .innerJoin('restaurants', 'restaurants.id', 'groups.restaurant_id')
+          .innerJoin('users_groups', 'groups.id', 'users_groups.group_id')
+          // .whereNot('users_groups.user_id', params.query.user_id)
+          .innerJoin('users', 'users.id', 'users_groups.user_id')
+          .groupBy('groups.datetime')
+          .groupBy('groups.id')
+          .groupBy('restaurant')
+          .groupBy('price')
+          .groupBy('image_source')
+        
+        return groups
+      }
+
       else {
         const groups = await Model('groups')
           .select(

@@ -39,8 +39,8 @@ function GroupBlockContainer({ foodType, desired, searchText, timePref, pricePre
             isMine: false,
             user_id: auth.user.id,
             $skip: explicitSkip === undefined ? currentSkip : explicitSkip,
-            $limit: QUERY_LIMIT
-            // type: foodType
+            $limit: QUERY_LIMIT,
+            type: foodType
         }
 
         // if (searchText.length > 0) {
@@ -55,7 +55,7 @@ function GroupBlockContainer({ foodType, desired, searchText, timePref, pricePre
             })
             .then(res => {
                 console.log('find res', res)
-                if (res.total === 0) setHasData(false)
+                if (res.length === 0) setHasData(false)
                 setTotal(res.total)
                 setCurrentSkip(prevState => prevState + QUERY_LIMIT)
                 return res
