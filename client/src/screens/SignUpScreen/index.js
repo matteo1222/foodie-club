@@ -19,8 +19,13 @@ function SignUpScreen() {
     const navigate = useNavigate()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [emailHasError, setEmailHasError] = useState(false)
+    const [emailHelperText, setEmailHelperText] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [confirmPasswordHasError, setConfirmPasswordHasError] = useState(false)
+    const [confirmPasswordHelperText, setConfirmPasswordHelperText] = useState('')
+
     const handleNameChange = (event) => {
         setName(event.target.value)
     }
@@ -33,9 +38,29 @@ function SignUpScreen() {
     const handleConfirmPasswordChange = (event) => {
         setConfirmPassword(event.target.value)
     }
+
+    const handleSignUpError = (err) => {
+        debugger
+        if (err.code === 400) {
+            setEmailHasError(true)
+            setEmailHelperText('This email address cannot be used')
+        } else {
+            console.error(err)
+        }
+    }
     const handleSubmit = (event) => {
         event.preventDefault()
         console.log('Submit')
+        setEmailHasError(false)
+        setEmailHelperText('')
+        setConfirmPasswordHasError(false)
+        setConfirmPasswordHelperText('')
+        // check if confirmed password is the same as password
+        if (password !== confirmPassword) {
+            setConfirmPasswordHasError(true)
+            setConfirmPasswordHelperText('The password is not the same as the confirmed password')
+            return
+        }
         const logInFunc = () => auth.login(
             email,
             password,
@@ -47,7 +72,7 @@ function SignUpScreen() {
             email,
             password,
             logInFunc,
-            (err) => console.log(err)
+            handleSignUpError
         )
     }
 
@@ -102,6 +127,8 @@ function SignUpScreen() {
                             label='Email Address'
                             name='email'
                             autoComplete='email'
+                            error={emailHasError}
+                            helperText={emailHelperText}
                         />
                         <TextField
                             value={password}
@@ -128,6 +155,8 @@ function SignUpScreen() {
                             type='password'
                             id='password'
                             autoComplete='current-password'
+                            error={confirmPasswordHasError}
+                            helperText={confirmPasswordHelperText}
                         />
                         <Button
                             type='submit'
