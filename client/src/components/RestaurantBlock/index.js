@@ -67,12 +67,12 @@ function RestaurantBlock ({ restaurant, disabled }) {
                 </Grid>
                 <Grid item xs={7}>
                     <Grid container alignItems='center' rowSpacing={1} sx={{padding: 2}}>
-                        <Grid item xs={10}>
+                        <Grid item xs={12}>
                             <Typography variant='subtitle1' sx={{fontWeight: 'bold'}}>
                                 {restaurant.name}
                             </Typography>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={12}>
                             <Typography variant='body2' sx={{whiteSpace: 'nowrap'}}>
                                 {restaurant.price}
                             </Typography>
@@ -93,9 +93,9 @@ function RestaurantBlock ({ restaurant, disabled }) {
                                 <Typography variant='body2' sx={{fontWeight: 'bold', color: COLORS.red}}>
                                     {`${restaurant.rating} / 5.0`}
                                 </Typography>
-                                <Typography variant='body2'>
+                                {/* <Typography variant='body2'>
                                     on Google
-                                </Typography>
+                                </Typography> */}
                             </Stack>
                         </Grid>
                         <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>

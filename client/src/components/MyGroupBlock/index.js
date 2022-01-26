@@ -4,7 +4,6 @@ import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
-import Button from '@mui/material/Button'
 import { COLORS } from '../../constants/colors'
 import { Link as RouterLink } from 'react-router-dom'
 import dayjs from 'dayjs'
@@ -35,12 +34,12 @@ function MyGroupBlock({id, selected, onClick, group}) {
                 </Grid>
                 <Grid item xs={7}>
                     <Grid container alignItems='center' rowSpacing={1} sx={{padding: 2}}>
-                        <Grid item xs={10}>
+                        <Grid item xs={12}>
                             <Typography variant='subtitle1' sx={{fontWeight: 'bold'}}>
                                 {group.restaurant}
                             </Typography>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={12}>
                             <Typography variant='body2'>
                                 {group.price}
                             </Typography>

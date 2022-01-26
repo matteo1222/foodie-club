@@ -17,9 +17,15 @@ module.exports = function (app) {
         table.string('price');
         table.enu('type', foodTypes);
         table.float('rating');
+        table.integer('rating_number');
+        table.string('location');
+        table.string('website');
+        table.string('contact_number');
+        table.string('opening_hours');
+        table.text('about');
         table.string('image_source');
-        table.timestamp('created_at').defaultTo(db.fn.now())
-        table.timestamp('updated_at').defaultTo(db.fn.now())
+        table.timestamp('created_at').defaultTo(db.fn.now());
+        table.timestamp('updated_at').defaultTo(db.fn.now());
       })
         .then(() => console.log(`Created ${tableName} table`))
         .catch(e => console.error(`Error creating ${tableName} table`, e));

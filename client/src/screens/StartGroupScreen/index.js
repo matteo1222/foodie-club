@@ -31,7 +31,7 @@ function StartGroupScreen() {
             .service('desired-restaurant')
             .find({
                 query: {
-                    user_id: 1,
+                    user_id: auth.user.id,
                     getRestaurants: true
                 }
             })
