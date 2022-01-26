@@ -4,7 +4,7 @@ def configure():
 		api_key = raw_input("What is your api_key?[672c3d5b9645db8dd7266626856cd015]") or '672c3d5b9645db8dd7266626856cd015'
 		budget = raw_input("What is your budget(per person/in your currency)?[100]") or 100
 		try:
-			gorup number = float(3-6)
+			gorup number = float(1-6)
 		except:
 			budget = 1,2,3,4,5,6
 			print "Couldn't parse number. Going with default!"
