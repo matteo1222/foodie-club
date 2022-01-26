@@ -67,7 +67,7 @@ function StartGroupScreen() {
             .service('desired-restaurant')
             .remove(desired.id)
     }
-
+    // TODO: fix bug cannot filter by foodType and price
     const getFoodTypeContainer = () => {
         if (foodPref.length === 0) {
             return foodTypes.map(el => {
