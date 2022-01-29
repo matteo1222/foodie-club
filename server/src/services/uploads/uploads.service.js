@@ -8,7 +8,11 @@ const fs = require('fs')
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
     const dir = 'public/profile_images'
-    fs.mkdir(dir, err => cb(err, dir))
+    if (!fs.existsSync(dir)) {
+      fs.mkdir(dir, err => cb(err, dir))
+    } else {
+      cb(null, dir)
+    }
   },
   filename: (req, file, cb) => cb(null, `${Date.now()}-${req.user.id}-${file.originalname}`)
 })

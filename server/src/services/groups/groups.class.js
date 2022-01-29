@@ -178,11 +178,14 @@ exports.Groups = class Groups extends Service {
       const { Model } = this.options
 
       try {
-        const created = await Model('users_groups').insert({
+        await Model('users_groups').insert({
           user_id: data.user_id,
           group_id: data.group_id
         })
-        return created
+        return {
+          user_id: data.user_id,
+          group_id: data.group_id
+        }
       } catch (err) {
         throw err
       }

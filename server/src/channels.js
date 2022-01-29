@@ -61,7 +61,13 @@ module.exports = function(app) {
   })
 
   app.service('groups').on('created', (data, { params }) => {
-    app.channel(`groups/${data.id}`).join(params.connection)
+    if (data.owner_id) {
+      // means user is creating a group
+      app.channel(`groups/${data.id}`).join(params.connection)
+    } else {
+      // user is joining a grou
+      app.channel(`groups/${data.group_id}`).join(params.connection)
+    }
   })
 
   // Here you can also add service specific event publishers

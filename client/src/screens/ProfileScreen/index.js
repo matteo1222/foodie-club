@@ -45,7 +45,7 @@ function ProfileScreen() {
                 if (err.code !== 404) {
                     console.error('Error fetching user avatar', err)
                 }
-                setImgSrc('https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png')
+                // setImgSrc('https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png')
             })
     }
 
