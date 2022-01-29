@@ -17,14 +17,15 @@ class Recommendations(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('mode', type=str)
-        parser.add_argument('index', type=int)
+        parser.add_argument('id', type=int)
 
-        if parser.parse_args().mode == 'similar' and parser.parse_args().index != None:
-            index = parser.parse_args().index
-            if index > restaurants.shape[0]:
+        if parser.parse_args().mode == 'similar' and parser.parse_args().id != None:
+            id = parser.parse_args().id
+
+            if id > restaurants.shape[0]:
                 return None, 404
 
-            test_data = word_tokenize(restaurants.loc[index]['doc'].lower())
+            test_data = word_tokenize(restaurants.loc[id]['doc'].lower())
             v1 = model.infer_vector(test_data)
             similar_doc = model.dv.most_similar([v1], topn=7)
             return similar_doc[1:], 200

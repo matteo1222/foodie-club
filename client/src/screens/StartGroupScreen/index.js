@@ -16,6 +16,7 @@ import { useAuth } from '../../components/auth'
 import LeftArrow from '../../components/LeftArrow'
 import RightArrow from '../../components/RightArrow'
 import RestaurantBlockContainer from '../../components/RestaurantBlockContainer'
+import RecommendedRestaurantBlockContainer from '../../components/RecommendedRestaurantBlockContainer'
 import { foodTypes } from '../../constants/foodTypes'
 
 function StartGroupScreen() {
@@ -70,7 +71,10 @@ function StartGroupScreen() {
     // TODO: fix bug cannot filter by foodType and price
     const getFoodTypeContainer = () => {
         if (foodPref.length === 0) {
-            return foodTypes.map(el => {
+            return foodTypes.map((el, idx) => {
+                if (idx === 1) {
+                    return <RecommendedRestaurantBlockContainer desired={desired} />
+                }
                 return (
                     <RestaurantBlockContainer
                         key={el.id}
@@ -154,19 +158,6 @@ function StartGroupScreen() {
             </Stack>
             <Box sx={{padding: 2}}>
                 {getFoodTypeContainer()}
-                <Typography variant='h5' color='secondary' sx={{fontWeight: 'bold', marginTop: 2}}>
-                    Restaurants you might like
-                </Typography>
-                <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                    {new Array(3).fill(null).map((el, idx) => {
-                        return (
-                            <RestaurantBlock
-                                restaurant={{name: 'HI', type: 'pizza', price: 'OO', image_source: '', rating: 4.5}}
-                                key={idx}
-                            />
-                        )
-                    })}
-                </Box>
             </Box>
         </Box>
     )

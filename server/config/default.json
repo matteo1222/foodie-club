@@ -47,5 +47,6 @@
   "postgres": {
     "client": "pg",
     "connection": "postgres://localhost:5432/foodie_club_server"
-  }
+  },
+  "recommendationUrl": "localhost:5000"
 }
