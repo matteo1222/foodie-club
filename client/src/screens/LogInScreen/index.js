@@ -3,6 +3,7 @@ import Header from '../../components/Header'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
@@ -93,16 +94,20 @@ function LogInScreen() {
                             id='password'
                             autoComplete='current-password'
                         />
-                        <Button
-                            type='submit'
-                            variant='contained'
-                            sx={{
-                                marginTop: 3,
-                                marginBottom: 2,
-                                borderRadius: 20,
-                                paddingX: 5
-                            }}
-                        >Log In</Button>
+                        <Stack direction='row' justifyContent='center' sx={{
+                            width: '100%'
+                        }}>
+                            <Button
+                                type='submit'
+                                variant='contained'
+                                sx={{
+                                    marginTop: 3,
+                                    marginBottom: 2,
+                                    borderRadius: 20,
+                                    paddingX: 5
+                                }}
+                            >Log In</Button>
+                        </Stack>
                     </Box>
                     <Typography component='span' sx={{
                         color: COLORS.black
