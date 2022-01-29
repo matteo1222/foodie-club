@@ -29,6 +29,12 @@ function RestaurantBlockContainer({ foodType, desired, searchText, pricePref }) 
                 $ilike: `%${searchText}%`
             }
         }
+
+        if (pricePref.length > 0) {
+            queryOption.price = {
+                $in: pricePref
+            }
+        }
         return client
             .service('restaurants')
             .find({

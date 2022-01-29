@@ -12,8 +12,6 @@ import './index.css'
 
 const FilterMenuRestaurant = ({ pricePref, setPricePref, foodPref, setFoodPref }) => {
     const [anchorEl, setAnchorEl] = useState(null)
-    // const [pricePref, setPricePref] = useState([])
-    // const [foodPref, setFoodPref] = useState([])
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget)
     }
@@ -72,33 +70,33 @@ const FilterMenuRestaurant = ({ pricePref, setPricePref, foodPref, setFoodPref }
                     <Typography variant='subtitle1' sx={{fontWeight: 'bold', marginY: 1}}>Price</Typography>
                     <Box>
                         <Chip
-                            label='£'
+                            label='£25 and under'
                             variant='filled'
-                            onClick={() => {handlePriceClick('£')}}
-                            className={`chip-selector ${pricePref.includes('£') ? 'chip-selector--active' : ''}`}
+                            onClick={() => {handlePriceClick('£25 and under')}}
+                            className={`chip-selector ${pricePref.includes('£25 and under') ? 'chip-selector--active' : ''}`}
                             sx={{
                                 marginX: 1
                             }}
                         />
                         <Chip
-                            label='££'
+                            label='£26 to £40'
                             variant='filled'
-                            onClick={() => {handlePriceClick('££')}}
-                            className={`chip-selector ${pricePref.includes('££') ? 'chip-selector--active' : ''}`}
+                            onClick={() => {handlePriceClick('£26 to £40')}}
+                            className={`chip-selector ${pricePref.includes('£26 to £40') ? 'chip-selector--active' : ''}`}
                             sx={{
                                 marginX: 1
                             }}
                         />
                         <Chip
-                            label='£££'
+                            label='£41 and over'
                             variant='filled'
-                            onClick={() => {handlePriceClick('£££')}}
-                            className={`chip-selector ${pricePref.includes('£££') ? 'chip-selector--active' : ''}`}
+                            onClick={() => {handlePriceClick('£41 and over')}}
+                            className={`chip-selector ${pricePref.includes('£41 and over') ? 'chip-selector--active' : ''}`}
                             sx={{
                                 marginX: 1
                             }}
                         />
-                        <Chip
+                        {/* <Chip
                             label='££££'
                             variant='filled'
                             onClick={() => {handlePriceClick('££££')}}
@@ -106,11 +104,11 @@ const FilterMenuRestaurant = ({ pricePref, setPricePref, foodPref, setFoodPref }
                             sx={{
                                 marginX: 1
                             }}
-                        />
+                        /> */}
                     </Box>
                     {/* Food Preference */}
                     <Typography variant='subtitle1' sx={{fontWeight: 'bold', marginY: 1}}>Types of Cuisine</Typography>
-                    <Box sx={{display: 'flex', flexWrap: 'wrap', width: 200}}>
+                    <Box sx={{display: 'flex', flexWrap: 'wrap', width: 400}}>
                         {foodTypes.map(el => {
                             return (
                                 <Chip
