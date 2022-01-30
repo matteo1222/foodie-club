@@ -1,21 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import RestaurantBlock from '../RestaurantBlock'
 import client from '../../feathers/feathers-client'
 
 function RecommendedRestaurantBlockContainer({ desired }) {
     // TODO: Recommendation engine, change to combine the factors of all the desired restaurants and find the similar ones?
-    // const QUERY_LIMIT = 6
     const [loading, setLoading] = useState(true)
-    // const [hasData, setHasData] = useState(true)
     const [restaurants, setRestaurants] = useState([])
-    // const [total, setTotal] = useState(0)
-    // const [currentSkip, setCurrentSkip] = useState(0)
     const thisRef = useRef(null)
 
-    const queryRestaurants = (explicitSkip) => {
+    const queryRestaurants = () => {
         console.log('query')
         let queryOption = {
             mode: 'popular'
@@ -51,7 +46,7 @@ function RecommendedRestaurantBlockContainer({ desired }) {
             entries => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        queryRestaurants(0)
+                        queryRestaurants()
                         observer = observer.disconnect()
                     }
                 })
@@ -59,8 +54,6 @@ function RecommendedRestaurantBlockContainer({ desired }) {
             { rootMargin: '0px 0px 100px 0px' }
         )
         observer.observe(thisRef.current)
-        // query restuarants
-        // queryRestaurants(foodType)
         return () => (observer = observer && observer.disconnect())
     }, [desired])
 

@@ -6,7 +6,6 @@ import FilterListIcon from '@mui/icons-material/FilterList'
 import { COLORS } from '../../constants/colors'
 import Popover from '@mui/material/Popover'
 import Chip from '@mui/material/Chip'
-import Slider from '@mui/material/Slider'
 import { foodTypes } from '../../constants/foodTypes'
 import './index.css'
 
