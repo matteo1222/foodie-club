@@ -33,7 +33,8 @@ function GroupBlock({ group }) {
             width: 350,
             boxShadow: `0px 4px 10px 2px ${COLORS.lightGrey}`,
             marginX: 1.2,
-            marginY: 1
+            marginY: 1,
+            display: 'grid'
         }}>
             <Grid container>
                 <Grid item xs={5}>

@@ -6,6 +6,7 @@ import RestaurantBlock from '../RestaurantBlock'
 import client from '../../feathers/feathers-client'
 
 function RecommendedRestaurantBlockContainer({ desired }) {
+    // TODO: Recommendation engine, change to combine the factors of all the desired restaurants and find the similar ones?
     // const QUERY_LIMIT = 6
     const [loading, setLoading] = useState(true)
     // const [hasData, setHasData] = useState(true)

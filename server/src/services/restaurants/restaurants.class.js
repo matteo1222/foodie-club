@@ -45,7 +45,6 @@ exports.Restaurants = class Restaurants extends Service {
         try {
           const res = await axios.get(recommendationUrl)
           const indices = res.data.map(el => Number(el[0]))
-          console.log('similar indices', indices)
           const restaurants = await Model('restaurants')
             .select()
             .whereIn('id', indices)

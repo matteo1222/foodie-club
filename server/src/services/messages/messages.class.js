@@ -22,7 +22,6 @@ exports.Messages = class Messages extends Service {
         .leftJoin('users', 'messages.user_id', 'users.id')
         .leftJoin('uploads', 'messages.user_id', 'uploads.id')
         .orderBy('messages.created_at')
-      console.log('messages', messages)
       return messages
     } catch (err) {
       throw err
