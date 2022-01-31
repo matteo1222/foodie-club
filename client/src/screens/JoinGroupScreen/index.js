@@ -39,7 +39,9 @@ function JoinGroupScreen() {
     //         })
     //         .then(res => setGroups(res))
     // }
-
+    const handleSearchChange = (event) => {
+        setSearchText(event.target.value)
+    }
     const getFoodTypeContainer = () => {
         if (foodPref.length === 0) {
             return foodTypes.map((el, idx) => {
@@ -75,7 +77,7 @@ function JoinGroupScreen() {
             <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <Typography variant='h4' sx={{fontWeight: 'bold'}}>Join a Group</Typography>
                 <Stack direction='row' alignItems='center' sx={{marginRight: 6}}>
-                    {matches && <SearchBar id='join-group-search-bar'/>}
+                    {matches && <SearchBar value={searchText} onChange={handleSearchChange} id='join-group-search-bar'/>}
                     <IconButton aria-label='join-group-search-button' sx={{display: {sm: 'block', md: 'none'}}}>
                         <SearchIcon/>
                     </IconButton>

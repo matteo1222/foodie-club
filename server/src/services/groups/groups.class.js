@@ -134,6 +134,9 @@ exports.Groups = class Groups extends Service {
             //     .count('users.id as usersCount')
             //     .havingBetween('userCount', params.query?.groupRange)
             // }
+            if (params.query?.name?.$ilike) {
+              queryBuilder.where('restaurants.name', 'ilike', params.query.name.$ilike)
+            }
           })
           .innerJoin('restaurants', 'restaurants.id', 'groups.restaurant_id')
           .innerJoin('users_groups', 'groups.id', 'users_groups.group_id')
