@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
+import Snackbar from '@mui/material/Snackbar'
 import { COLORS } from '../../constants/colors'
 import dayjs from 'dayjs'
 import { useAuth } from '../auth'
@@ -13,6 +14,8 @@ import './index.css'
 
 function GroupBlock({ group }) {
     const auth = useAuth()
+    const [showSnackbar, setShowSnackbar] = useState(false)
+
     const handleGroupJoin = () => {
         console.log('join')
         client
@@ -25,6 +28,14 @@ function GroupBlock({ group }) {
                     join: true
                 }
             })
+            .then(() => {
+                setShowSnackbar(true)
+            })
+            .catch(err => console.error('Error joining group: ', err))
+    }
+
+    const handleClose = () => {
+        setShowSnackbar(false)
     }
     return (
         <Box sx={{
@@ -85,6 +96,12 @@ function GroupBlock({ group }) {
                     </Grid>
                 </Grid>
             </Grid>
+            <Snackbar
+                open={showSnackbar}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                message='Group joined'
+            />
         </Box>
     )
 }

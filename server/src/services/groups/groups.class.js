@@ -231,4 +231,29 @@ exports.Groups = class Groups extends Service {
     }
 
   }
+
+  async remove (id, params) {
+    if (params.query?.leave === true) {
+      // find all groups of a user
+      if (params.query?.user_id === undefined) {
+        throw new Error('No user_id is specified')
+      }
+      if (params.query?.group_id === undefined) {
+        throw new Error('No group_id is specified')
+      }
+      const { Model } = this.options
+      await Model('users_groups')
+        .del()
+        .where('user_id', params.query?.user_id)
+        .where('group_id', params.query?.group_id)
+
+      
+      return {
+        user_id: params.query?.user_id,
+        group_id: params.query?.group_id
+      }
+    }
+
+    return super.remove(id, params)
+  }
 };

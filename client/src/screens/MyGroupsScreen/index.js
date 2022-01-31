@@ -35,8 +35,27 @@ function MyGroupsScreen(props) {
             })
             .then(res => setGroups(res))
     }
+
+    const onRemoved = (removed) => {
+        // use channel instead
+        if (removed.user_id !== auth.user.id) {
+            return
+        }
+
+        setGroups(prevState => prevState.filter(el => el.id !== removed.group_id))
+    }
     useEffect(() => {
         queryGroups()
+
+        // set up listener for remove event
+        client
+            .service('groups')
+            .on('removed', onRemoved)
+        return (() => {
+            client
+                .service('groups')
+                .removeListener('groups')
+        })
     }, [])
 
     return (

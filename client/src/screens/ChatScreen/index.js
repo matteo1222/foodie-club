@@ -10,14 +10,18 @@ import ChatInput from '../../components/ChatInput'
 import IconButton from '@mui/material/IconButton'
 import SendIcon from '@mui/icons-material/Send'
 import Button from '@mui/material/Button'
+import LeaveGroupModal from '../../components/LeaveGroupModal'
 import client from '../../feathers/feathers-client'
 import { useAuth } from '../../components/auth'
+import { useNavigate } from 'react-router-dom'
 
 function ChatScreen() {
     const auth = useAuth()
+    const navigate = useNavigate()
     const chatInputRef = useRef(null)
     const messageBoxRef = useRef(null)
     const messagesRef = useRef(null)
+    const [open, setOpen] = useState(false)
     const [messages, setMessages] = useState([])
     const [chatValue, setChatValue] = useState('')
     let params = useParams()
@@ -48,6 +52,32 @@ function ChatScreen() {
             .then(() => setChatValue(''))
             .catch(err => console.error('Error sending message:', err))
     }
+
+    const handleClickLeave = () => {
+        setOpen(true)
+    }
+
+    const handleCloseModal = () => {
+        setOpen(false)
+    }
+
+    const handleLeaveGroup = () => {
+        client
+            .service('groups')
+            .remove(null, {
+                query: {
+                    leave: true,
+                    user_id: auth.user.id,
+                    group_id: groupId
+                }
+            })
+            .then(() => {
+                setOpen(false)
+                navigate('/my-groups')
+            })
+            .catch(err => console.error('Error leaving group: ', err))
+    }
+
     const scrollToBottom = () => {
         console.log('messagesRef', messagesRef)
         if (messagesRef.current && messageBoxRef.current) {
@@ -149,8 +179,9 @@ function ChatScreen() {
                 </Stack>
             </Grid>
             <Grid item sm={12}>
-                <Stack direction='row' justifyContent='center'>
-                    <Button
+                <Stack direction='row' justifyContent='stretch'>
+                    {/* TODO: Add confirm to join functionality */}
+                    {/* <Button
                         type='submit'
                         variant='contained'
                         sx={{
@@ -159,9 +190,9 @@ function ChatScreen() {
                             borderRadius: 20,
                             marginX:1
                         }}
-                    >Confirm to Join</Button>
+                    >Confirm to Join</Button> */}
                     <Button
-                        type='submit'
+                        onClick={handleClickLeave}
                         variant='contained'
                         color='error'
                         sx={{
@@ -173,6 +204,11 @@ function ChatScreen() {
                     >Leave Group</Button>
                 </Stack>
             </Grid>
+            <LeaveGroupModal
+                open={open}
+                handleClose={handleCloseModal}
+                handleSubmit={handleLeaveGroup}
+            />
         </Grid>
     )
 }
