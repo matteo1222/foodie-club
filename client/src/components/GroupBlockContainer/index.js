@@ -8,7 +8,7 @@ import GroupBlock from '../GroupBlock'
 import { useAuth } from '../auth'
 import client from '../../feathers/feathers-client'
 
-function GroupBlockContainer({ foodType, desired, searchText, timePref, pricePref }) {
+function GroupBlockContainer({ foodType, desired, searchText, timePref, pricePref, groupRange }) {
     const auth = useAuth()
     const QUERY_LIMIT = 6
     const [loading, setLoading] = useState(true)
@@ -40,14 +40,22 @@ function GroupBlockContainer({ foodType, desired, searchText, timePref, pricePre
             user_id: auth.user.id,
             $skip: explicitSkip === undefined ? currentSkip : explicitSkip,
             $limit: QUERY_LIMIT,
-            type: foodType
+            type: foodType,
+            groupRange: groupRange
         }
 
-        // if (searchText.length > 0) {
-        //     queryOption.name = {
-        //         $ilike: `%${searchText}%`
-        //     }
-        // }
+        if (searchText.length > 0) {
+            queryOption.name = {
+                $ilike: `%${searchText}%`
+            }
+        }
+
+        if (pricePref.length > 0) {
+            queryOption.price = pricePref
+        }
+
+        console.log('queryOption', queryOption)
+
         return client
             .service('groups')
             .find({
@@ -86,7 +94,7 @@ function GroupBlockContainer({ foodType, desired, searchText, timePref, pricePre
         )
         observer.observe(thisRef.current)
         return () => (observer = observer && observer.disconnect())
-    }, [foodType, pricePref, searchText])
+    }, [foodType, pricePref, searchText, groupRange])
 
     return (
         <Box ref={thisRef} sx={{

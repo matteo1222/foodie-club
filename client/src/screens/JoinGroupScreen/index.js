@@ -22,6 +22,7 @@ function JoinGroupScreen() {
     const [joined, setJoined] = useState([])
     const [foodPref, setFoodPref] = useState([])
     const [pricePref, setPricePref] = useState([])
+    const [groupRange, setGroupRange] = useState([2, 8])
     const [searchText, setSearchText] = useState('')
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
     // const queryGroups = () => {
@@ -42,26 +43,28 @@ function JoinGroupScreen() {
 
     const getFoodTypeContainer = () => {
         if (foodPref.length === 0) {
-            return foodTypes.map(el => {
+            return foodTypes.map((el, idx) => {
                 return (
                     <GroupBlockContainer
-                        key={el.id}
+                        key={idx}
                         foodType={el.value}
                         joined={joined}
                         searchText={searchText}
+                        groupRange={groupRange}
                         pricePref={pricePref}
                     />
                 )
             })
         }
         
-        return foodPref.map(el => {
+        return foodPref.map((el, idx) => {
             return (
                 <GroupBlockContainer
-                    key={el.id}
+                    key={idx}
                     foodType={el}
                     joined={joined}
                     searchText={searchText}
+                    groupRange={groupRange}
                     pricePref={pricePref}
                 />
             )
@@ -80,7 +83,14 @@ function JoinGroupScreen() {
                     {/* <IconButton aria-label='join-group-filter-button'>
                         <FilterListIcon/>
                     </IconButton> */}
-                    <FilterMenuGroup/>
+                    <FilterMenuGroup
+                        foodPref={foodPref}
+                        setFoodPref={setFoodPref}
+                        pricePref={pricePref}
+                        setPricePref={setPricePref}
+                        groupRange={groupRange}
+                        setGroupRange={setGroupRange}
+                    />
                 </Stack>
             </Stack>
             {/* <Box sx={{padding: 2}}>
@@ -102,7 +112,7 @@ function JoinGroupScreen() {
                 <UpcomingGroupBlockContainer />
                 <PopularGroupBlockContainer />
                 {getFoodTypeContainer()}
-                <GroupBlockContainer foodType='french'/>
+                {/* <GroupBlockContainer foodType='french'/> */}
             </Box>
         </Box>
     )

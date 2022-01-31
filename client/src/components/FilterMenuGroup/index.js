@@ -10,12 +10,19 @@ import Slider from '@mui/material/Slider'
 import { foodTypes } from '../../constants/foodTypes'
 import './index.css'
 
-const FilterMenuGroup = () => {
+const FilterMenuGroup = ({
+    pricePref,
+    setPricePref,
+    foodPref,
+    setFoodPref,
+    groupRange,
+    setGroupRange
+}) => {
     const [anchorEl, setAnchorEl] = useState(null)
     const [timePref, setTimePref] = useState([])
-    const [groupRange, setGroupRange] = useState([3, 6])
-    const [pricePref, setPricePref] = useState([])
-    const [foodPref, setFoodPref] = useState([])
+    // const [groupRange, setGroupRange] = useState([3, 6])
+    // const [pricePref, setPricePref] = useState([])
+    // const [foodPref, setFoodPref] = useState([])
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget)
     }
@@ -92,8 +99,9 @@ const FilterMenuGroup = () => {
                 }}
                 >
                 <Box sx={{background: COLORS.lightGrey, height: 600, overflowY: 'scroll', padding: 2}}>
+                    {/* TODO: Add time and groupSize filter */}
                     {/* Time Preference */}
-                    <Typography variant='subtitle1' sx={{fontWeight: 'bold', marginY: 1}}>Time</Typography>
+                    {/* <Typography variant='subtitle1' sx={{fontWeight: 'bold', marginY: 1}}>Time</Typography>
                     <Box>
                         <Chip
                             label='Daytime'
@@ -113,9 +121,9 @@ const FilterMenuGroup = () => {
                                 marginX: 1
                             }}
                         />
-                    </Box>
+                    </Box> */}
                     {/* Group Size Preference */}
-                    <Typography variant='subtitle1' sx={{fontWeight: 'bold', marginTop: 1, marginBottom: 5}}>Size of Group</Typography>
+                    {/* <Typography variant='subtitle1' sx={{fontWeight: 'bold', marginTop: 1, marginBottom: 5}}>Size of Group</Typography>
                     <Box>
                         <Slider
                             getAriaLabel={() => 'Group number range'}
@@ -127,7 +135,7 @@ const FilterMenuGroup = () => {
                             min={2}
                             max={8}
                         />
-                    </Box>
+                    </Box> */}
                     {/* Price Preference */}
                     <Typography variant='subtitle1' sx={{fontWeight: 'bold', marginY: 1}}>Price</Typography>
                     <Box>
@@ -170,15 +178,15 @@ const FilterMenuGroup = () => {
                     </Box>
                     {/* Food Preference */}
                     <Typography variant='subtitle1' sx={{fontWeight: 'bold', marginY: 1}}>Types of Cuisine</Typography>
-                    <Box sx={{display: 'flex', flexWrap: 'wrap', width: 200}}>
+                    <Box sx={{display: 'flex', flexWrap: 'wrap', width: 400}}>
                         {foodTypes.map(el => {
                             return (
                                 <Chip
                                     key={el.id}
                                     label={el.label}
                                     variant='filled'
-                                    onClick={() => {handleFoodClick(el.id)}}
-                                    className={`chip-selector ${foodPref.includes(el.id) ? 'chip-selector--active' : ''}`}
+                                    onClick={() => {handleFoodClick(el.value)}}
+                                    className={`chip-selector ${foodPref.includes(el.value) ? 'chip-selector--active' : ''}`}
                                     sx={{
                                         marginX: 1,
                                         marginY: 0.5

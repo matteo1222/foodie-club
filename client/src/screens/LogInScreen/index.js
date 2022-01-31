@@ -31,7 +31,7 @@ function LogInScreen() {
     const handleSubmit = (event) => {
         event.preventDefault()
         console.log('Submit')
-        if (from === '/login') {
+        if (!from || from === '/' || from === '/login') {
             from = '/join-a-group'
         }
         auth.login(

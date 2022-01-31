@@ -121,6 +121,20 @@ exports.Groups = class Groups extends Service {
             Model('users_groups').select('group_id').where('user_id', params.query.user_id)
           )
           .where('restaurants.type', params.query.type)
+          .modify((queryBuilder) => {
+            if (params.query?.price) {
+              queryBuilder.whereIn('restaurants.price', params.query?.price)
+            }
+            // TODO: add groupRange filter
+            // if (params.query?.groupRange
+            //     && Number.isInteger(params.query?.groupRange[0])
+            //     && Number.isInteger(params.query?.groupRange[1])
+            //   ) {
+            //   queryBuilder
+            //     .count('users.id as usersCount')
+            //     .havingBetween('userCount', params.query?.groupRange)
+            // }
+          })
           .innerJoin('restaurants', 'restaurants.id', 'groups.restaurant_id')
           .innerJoin('users_groups', 'groups.id', 'users_groups.group_id')
           // .whereNot('users_groups.user_id', params.query.user_id)
