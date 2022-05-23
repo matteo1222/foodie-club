@@ -41,5 +41,5 @@ python ./server.py
 Python's version should be 3.8
 
 
-Head here to read about more about this team project: https://medium.com/@london_6354/foodie-club-891babbd6449
+Head here to read more about this team project: https://medium.com/@london_6354/foodie-club-891babbd6449
 
