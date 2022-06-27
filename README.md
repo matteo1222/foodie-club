@@ -1,6 +1,10 @@
 # Foodie Club
 A web app to match people who would like to try the same restaurant and they would like to have others to go with. This project is deployed [here](https://foodieclub.co).
 
+A fake account to look around:
+- Username: johndoe@gmail.com
+- Password: johndoe
+
 # The Problem
 Ever wanted to go to a restaurant and people you know weren’t available that day? It’s hard enough getting 1 friend to be available at the same time, what about if you want to go with a bigger group? Sometimes people also don’t have a group of e.g. 6–8 people to enjoy the private dining room experience and there’s also no way currently to be matched to meet new people that want to go to the same restaurant as you at the same date or who want to explore new cuisines or restaurants.
 
