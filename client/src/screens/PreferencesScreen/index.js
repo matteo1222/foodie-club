@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
 import Grid from '@mui/material/Grid'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -9,7 +8,6 @@ import Chip from '@mui/material/Chip'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import IconButton from '@mui/material/IconButton'
-import { COLORS } from '../../constants/colors'
 import StepIndicator from '../../components/StepIndicator'
 import WeekdayTimeTable from '../../components/WeekdayTimeTable'
 import { foodTypes } from '../../constants/foodTypes'

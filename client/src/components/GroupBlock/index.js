@@ -17,7 +17,6 @@ function GroupBlock({ group }) {
     const [showSnackbar, setShowSnackbar] = useState(false)
 
     const handleGroupJoin = () => {
-        console.log('join')
         client
             .service('groups')
             .create({

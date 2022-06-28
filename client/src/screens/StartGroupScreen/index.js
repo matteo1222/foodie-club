@@ -39,7 +39,6 @@ function StartGroupScreen() {
     }
 
     const onCreated = (created) => {
-        console.log('created', created)
         if (created.user_id !== auth.user.id) return
 
         setDesired(prevState => [...prevState, {
@@ -52,7 +51,6 @@ function StartGroupScreen() {
     }
 
     const onRemoved = (removed) => {
-        console.log('removed', removed)
         if (removed.user_id !== auth.user.id) return
 
         setDesired(prevState => prevState.filter(el => el.id !== removed.id))
@@ -144,9 +142,7 @@ function StartGroupScreen() {
                     <IconButton aria-label='join-group-search-button' sx={{display: {sm: 'block', md: 'none'}}}>
                         <SearchIcon/>
                     </IconButton>
-                    {/* <IconButton aria-label='join-group-filter-button'>
-                        <FilterListIcon/>
-                    </IconButton> */}
+                    {/* TODO: Refactor interface */}
                     <FilterMenuRestaurant
                         pricePref={pricePref}
                         setPricePref={setPricePref}

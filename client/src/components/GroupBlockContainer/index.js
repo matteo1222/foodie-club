@@ -18,23 +18,7 @@ function GroupBlockContainer({ foodType, desired, searchText, timePref, pricePre
     const [currentSkip, setCurrentSkip] = useState(0)
     const thisRef = useRef(null)
 
-    // const queryGroups = () => {
-    //     client
-    //         .service('groups')
-    //         .find({
-    //             query: {
-    //                 isMine: false,
-    //                 user_id: auth.user.id
-    //             }
-    //         })
-    //         .then(res => {
-    //             console.log('group res', res)
-    //             return res
-    //         })
-    //         .then(res => setGroups(res))
-    // }
     const queryGroups = (explicitSkip) => {
-        console.log('query')
         let queryOption = {
             isMine: false,
             user_id: auth.user.id,
@@ -53,8 +37,6 @@ function GroupBlockContainer({ foodType, desired, searchText, timePref, pricePre
         if (pricePref.length > 0) {
             queryOption.price = pricePref
         }
-
-        console.log('queryOption', queryOption)
 
         return client
             .service('groups')
@@ -97,6 +79,7 @@ function GroupBlockContainer({ foodType, desired, searchText, timePref, pricePre
     }, [foodType, pricePref, searchText, groupRange])
 
     return (
+        // TODO: Fix the layout shifting bug
         <Box ref={thisRef} sx={{
             minHeight: 400,
             display: hasData ? 'block' : 'none',
@@ -108,7 +91,6 @@ function GroupBlockContainer({ foodType, desired, searchText, timePref, pricePre
             <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
                 {groups.map((el) => {
                     return (
-                        // <GroupBlock restaurant={restaurant} key={restaurant.id} disabled={desired.some(el => el.restaurant_id === restaurant.id)}/>
                         <GroupBlock
                             group={el}
                             key={el.id}

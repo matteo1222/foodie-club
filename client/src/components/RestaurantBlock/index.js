@@ -26,7 +26,6 @@ function RestaurantBlock ({ restaurant, disabled }) {
         setDateTime(newValue)
     }
     const handleStartGroup = () => {
-        console.log('join')
         setOpen(false)
         // Add desired restaurant
         client
@@ -42,7 +41,6 @@ function RestaurantBlock ({ restaurant, disabled }) {
             .catch(err => console.error('Error creating desired restaurant', err))
         
         // Create a group
-        console.log('dateTime', dateTime.toISOString())
         client
             .service('groups')
             .create({
@@ -94,9 +92,6 @@ function RestaurantBlock ({ restaurant, disabled }) {
                                 <Typography variant='body2' sx={{fontWeight: 'bold', color: COLORS.red}}>
                                     {`${restaurant.rating} / 5.0`}
                                 </Typography>
-                                {/* <Typography variant='body2'>
-                                    on Google
-                                </Typography> */}
                             </Stack>
                         </Grid>
                         <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>

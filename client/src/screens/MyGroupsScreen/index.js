@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { theme } from '../../constants/theme'
 import MyGroupBlock from '../../components/MyGroupBlock'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../components/auth'
 import client from '../../feathers/feathers-client'
 
@@ -14,8 +10,6 @@ function MyGroupsScreen(props) {
     const auth = useAuth()
     const [groups, setGroups] = useState([])
     const [selectedGroup, setSelectedGroup] = useState(null)
-    const navigate = useNavigate()
-    const matches = useMediaQuery(theme.breakpoints.up('sm'));
     const handleClick = (id) => {
         setSelectedGroup(id)
     }
@@ -28,10 +22,6 @@ function MyGroupsScreen(props) {
                     isMine: true,
                     user_id: auth.user.id
                 }
-            })
-            .then(res => {
-                console.log('group res', res)
-                return res
             })
             .then(res => setGroups(res))
     }

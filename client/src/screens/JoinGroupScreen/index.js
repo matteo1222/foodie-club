@@ -8,7 +8,6 @@ import { theme } from '../../constants/theme'
 import SearchBar from '../../components/SearchBar'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import FilterMenuGroup from '../../components/FilterMenuGroup'
-import { useAuth } from '../../components/auth'
 import GroupBlockContainer from '../../components/GroupBlockContainer'
 import UpcomingGroupBlockContainer from '../../components/UpComingGroupBlockContainer'
 import PopularGroupBlockContainer from '../../components/PopularGroupBlockContainer'
@@ -16,29 +15,14 @@ import { foodTypes } from '../../constants/foodTypes'
 
 function JoinGroupScreen() {
     // TODO: create a state with joined groups
-    const auth = useAuth()
-    // const [groups, setGroups] = useState([])
+    // TODO: update aria-label
     const [joined, setJoined] = useState([])
     const [foodPref, setFoodPref] = useState([])
     const [pricePref, setPricePref] = useState([])
     const [groupRange, setGroupRange] = useState([2, 8])
     const [searchText, setSearchText] = useState('')
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
-    // const queryGroups = () => {
-    //     client
-    //         .service('groups')
-    //         .find({
-    //             query: {
-    //                 isMine: false,
-    //                 user_id: auth.user.id
-    //             }
-    //         })
-    //         .then(res => {
-    //             console.log('group res', res)
-    //             return res
-    //         })
-    //         .then(res => setGroups(res))
-    // }
+
     const handleSearchChange = (event) => {
         setSearchText(event.target.value)
     }
@@ -81,9 +65,7 @@ function JoinGroupScreen() {
                     <IconButton aria-label='join-group-search-button' sx={{display: {sm: 'block', md: 'none'}}}>
                         <SearchIcon/>
                     </IconButton>
-                    {/* <IconButton aria-label='join-group-filter-button'>
-                        <FilterListIcon/>
-                    </IconButton> */}
+                    {/* TODO: Refactor */}
                     <FilterMenuGroup
                         foodPref={foodPref}
                         setFoodPref={setFoodPref}
@@ -94,26 +76,10 @@ function JoinGroupScreen() {
                     />
                 </Stack>
             </Stack>
-            {/* <Box sx={{padding: 2}}>
-                <Typography variant='h5' color='secondary' sx={{fontWeight: 'bold'}}>
-                    French
-                </Typography>
-                <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                    {groups.map((el) => {
-                        return (
-                            <GroupBlock
-                                group={el}
-                                key={el.id}
-                            />
-                        )
-                    })}
-                </Box>
-            </Box> */}
             <Box sx={{ padding: 2 }}>
                 <UpcomingGroupBlockContainer />
                 <PopularGroupBlockContainer />
                 {getFoodTypeContainer()}
-                {/* <GroupBlockContainer foodType='french'/> */}
             </Box>
         </Box>
     )

@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect, createRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Stack from '@mui/material/Stack'
-import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import { COLORS } from '../../constants/colors'
 import ChatMessage from '../../components/ChatMessage'
@@ -30,13 +29,6 @@ function ChatScreen() {
     const handleChatInputChange = (event) => {
         setChatValue(event.target.value)
     }
-
-    // const handleKeyPress = (event) => {
-    //     if (event.key === 'Enter') {
-    //         event.preventDefault()
-    //         handleMessageSend()
-    //     }
-    // }
 
     const handleMessageSend = () => {
         if (chatValue.trim() === '') {
@@ -79,15 +71,12 @@ function ChatScreen() {
     }
 
     const scrollToBottom = () => {
-        console.log('messagesRef', messagesRef)
         if (messagesRef.current && messageBoxRef.current) {
             const { height } = messagesRef.current.getBoundingClientRect()
             messageBoxRef.current.scrollTo({ top: height, behavior: 'smooth' })
         }
     }
     const onCreated = (created) => {
-        console.log('created', created)
-        console.log('groupId', groupId)
         if (created.group_id !== groupId) {
             return
         }
@@ -165,7 +154,6 @@ function ChatScreen() {
                     <ChatInput
                         inputRef={chatInputRef}
                         onChange={handleChatInputChange}
-                        // onKeyPress={handleKeyPress}
                         value={chatValue}
                     />
                     <IconButton
@@ -180,17 +168,6 @@ function ChatScreen() {
             </Grid>
             <Grid item sm={12}>
                 <Stack direction='row' justifyContent='stretch'>
-                    {/* TODO: Add confirm to join functionality */}
-                    {/* <Button
-                        type='submit'
-                        variant='contained'
-                        sx={{
-                            marginTop: 3,
-                            marginBottom: 2,
-                            borderRadius: 20,
-                            marginX:1
-                        }}
-                    >Confirm to Join</Button> */}
                     <Button
                         onClick={handleClickLeave}
                         variant='contained'

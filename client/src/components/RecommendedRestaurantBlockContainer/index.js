@@ -11,7 +11,6 @@ function RecommendedRestaurantBlockContainer({ desired }) {
     const thisRef = useRef(null)
 
     const queryRestaurants = () => {
-        console.log('query')
         let queryOption = {
             mode: 'popular'
         }
@@ -29,7 +28,6 @@ function RecommendedRestaurantBlockContainer({ desired }) {
                 query: queryOption
             })
             .then(res => {
-                console.log('find res', res)
                 return res
             })
             .then(res => {

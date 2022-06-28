@@ -4,12 +4,8 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import { COLORS } from '../../constants/colors'
-import { VisibilityContext } from 'react-horizontal-scrolling-menu'
 
 function SelectedRestaurantBlock({ restaurantName, imgSrc, close, itemId }) {
-    const visibility = React.useContext(VisibilityContext)
-    const visible = visibility.isItemVisible(itemId)
-
     return (
         <Box sx={{
             display: 'flex',
