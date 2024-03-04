@@ -138,7 +138,7 @@ function ChatScreen() {
                                     <ChatMessage
                                         username={el.username}
                                         userId={el.userId}
-                                        userAvatarSrc={`http://localhost:3030/${el.userAvatarSrc}`}
+                                        userAvatarSrc={`${window.location.protocol}//${window.location.hostname}/${el.userAvatarSrc}`}
                                         message={el.text}
                                         isMine={el.userId === auth.user.id}
                                         key={idx}

@@ -2,10 +2,12 @@ import feathers from '@feathersjs/client';
 import socketio from '@feathersjs/socketio-client';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3030');
+const socket = io(`${window.location.protocol}//${window.location.hostname}`);
 const client = feathers();
 
-client.configure(socketio(socket));
+client.configure(socketio(socket, {
+  timeout: 30000
+}));
 client.configure(
     feathers.authentication({
         storage: window.localStorage,

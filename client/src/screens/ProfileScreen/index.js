@@ -32,9 +32,8 @@ function ProfileScreen() {
             .get(paramsUserId)
             .then(res => {
                 if (res.path) {
-                    console.log('res.path', res.path)
                     // remove public/
-                    const imgURL = `http://localhost:3030/${res.path}`
+                    const imgURL = `${window.location.protocol}//${window.location.hostname}/${res.path}`
                     setImgSrc(imgURL)
                 } else if (paramsUserId !== auth.user.id) {
                     // TODO: change this
@@ -86,7 +85,7 @@ function ProfileScreen() {
         if (imageData) {
             formData.append('file', imageData)
 
-            const UPLOAD_URL = `http://localhost:3030/uploads?user_id=${auth.user.id}&access_token=${localStorage.getItem('feathers-jwt')}`
+            const UPLOAD_URL = `${window.location.protocol}//${window.location.hostname}/uploads?user_id=${auth.user.id}&access_token=${localStorage.getItem('feathers-jwt')}`
 
             fetch(UPLOAD_URL, {
                 mode: 'no-cors',
@@ -130,7 +129,7 @@ function ProfileScreen() {
                     <Typography variant='h4' sx={{fontWeight: 'bold'}}>Profile</Typography>
                 </Grid>
                 <Grid item sm={10} md={6} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <Box 
+                    <Box
                         component='label'
                         className='photo-button' sx={{
                         width: 150,
