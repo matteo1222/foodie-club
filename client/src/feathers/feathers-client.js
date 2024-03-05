@@ -2,7 +2,8 @@ import feathers from '@feathersjs/client';
 import socketio from '@feathersjs/socketio-client';
 import io from 'socket.io-client';
 
-const socket = io(`${window.location.protocol}//${window.location.hostname}`);
+const basePath = window.location.pathname.split('/')[1]
+const socket = io(`${window.location.protocol}//${window.location.hostname}/${basePath}`);
 const client = feathers();
 
 client.configure(socketio(socket, {
